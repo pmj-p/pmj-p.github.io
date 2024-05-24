@@ -275,64 +275,14 @@
 <li>松耦合，聚集单一业务功能，便利集中，功能小而精</li>
 </ul>
 <p><strong>缺点</strong>：</p>
-<ul>
-<li>随着服务数量增加，管理复杂，部署复杂</li>
-<li>数据一致性问题，性能监控</li>
-</ul>
-<h1 id="微服务之间如何独立通讯？"><a href="#微服务之间如何独立通讯？" class="headerlink" title="微服务之间如何独立通讯？"></a>微服务之间如何独立通讯？</h1><ul>
-<li>同步通信：Dubbo通过RPC远程过程调用；SpringCloud通过REST接口json调用</li>
-<li>异步：消息队列-RabbitMQ</li>
-</ul>
-<h1 id="SpringCloud和dubbo区别在哪？各有什么优缺点？"><a href="#SpringCloud和dubbo区别在哪？各有什么优缺点？" class="headerlink" title="SpringCloud和dubbo区别在哪？各有什么优缺点？"></a>SpringCloud和dubbo区别在哪？各有什么优缺点？</h1><p><strong>相同点</strong>：两个都是分布式管理框架 </p>
-<p><strong>区别</strong>：</p>
-<ul>
-<li><strong>初始定位不同</strong>：SpringCloud定位为微服务架构下的一站式解决方案；Dubbo是SOA时代的产物，它的关注点主要在于服务的调用和治理</li>
-<li><strong>生态环境不同</strong>：SpringCloud依托于Spring平台，具备更完善的生态体系；而Dubbo一开始做RPC远程调用</li>
-<li><strong>调用方式</strong>：SpringCloud是采用Http协议做远程调用，接口一般是Rest风格，比较灵活。Dubbo是采用Dubbo协议，接口一般是Java的Service接口。</li>
-</ul>
-<p><strong>优缺点</strong>：</p>
-<ul>
-<li>SpringCloud可以和其他Spring项目完美融合，这些对于微服务是至关重要的</li>
-<li>Dubbo构建的微服务架构就是组装电脑，各环节选择自由度高，但可能因为其中一个小环节不行久不行了。但SpringCloud不会有这种问题</li>
-</ul>
-<p><strong>Dubbo、SpringCloud比较</strong></p>
-
-
-<h2 id="RPC是什么？"><a href="#RPC是什么？" class="headerlink" title="RPC是什么？"></a>RPC是什么？</h2><p>Remote procedure call：远程过程调用协议，通过网络从远程计算机上请求服务，不需要了解底层网络技术的协议。</p>
-<h2 id="Feign和RPC对比"><a href="#Feign和RPC对比" class="headerlink" title="Feign和RPC对比"></a>Feign和RPC对比</h2><ul>
-<li>Fegin：<br>○ 轻量级Java库，专为简化HTTP客户端调用而生<br>○ 通过动态代理和接口注解，Feign使得调用远程服务如同调用本地方法一样直观便捷<br>○ 常用于spring cloud等微服务框架中，与服务发现、负载均衡等服务治理组件紧密集成，提供一种声明式的HTTP客户端解决方案</li>
-<li>RPC：<br>○ 一种跨网络进程间通信技术，其目标是使远程服务调用如同本地调用一样透明<br>○ 传统的RPC实现基于自定义协议和传输层（如TCP），而现代RPC框架如gRPC则采用HTTP&#x2F;2作为传输层，支持更高效的数据交换。<br>○ RPC框架通常内置服务发现、负载均衡、序列化&#x2F;反序列化等高级功能，适用于高性能、低延迟的内部服务通信。</li>
-</ul>
-<h1 id="SpringBoot和SpringCloud"><a href="#SpringBoot和SpringCloud" class="headerlink" title="SpringBoot和SpringCloud"></a>SpringBoot和SpringCloud</h1><ul>
-<li>SpringBoot专注于快速开发单个个体微服务</li>
-<li>SpringCloud是关注全局的微服务协调整理治理框架，将SpringBoot开发的一个个单体服务整合管理起来</li>
-<li>SpringBoot可以离开SpringCloud独立开发项目，SpringCloud不能离开SpringBoot</li>
-</ul>
-<h1 id="服务治理"><a href="#服务治理" class="headerlink" title="服务治理"></a>服务治理</h1><h2 id="为什么需要服务注册与发现？"><a href="#为什么需要服务注册与发现？" class="headerlink" title="为什么需要服务注册与发现？"></a>为什么需要服务注册与发现？</h2><p>在微服务架构下，一个系统通常由多个微服务组成。一个用户请求可能需要多个服务参与，这些服务之间互相配合以维持系统的正常运行。</p>
-<ul>
-<li>在没有服务注册与发现机制之前，每个服务会将其依赖的其他服务地址信息写死在配置文件中。假设当系统中的订单服务访问量突然变大，我们需要对订单服务进行扩容，也就是多部署一些订单服务来分担压力。此时我们需要手动更新所有依赖该服务的地址配置信息。</li>
-<li>同理，当某个服务节点突然宕机，我们要手动更新所有对应服务节点信息。更新完后还需要重启这些服务。</li>
-</ul>
-<p>但有了服务注册与发现机制之后，就不需要这么麻烦了。可以帮助我们实现服务的优雅上下线，从而实现服务的弹性扩缩容。</p>
-<ul>
-<li>注册中心可以动态获取可用服务的地址信息</li>
-<li>服务信息发生变更，注册中心会将变更推送给相关联的服务，更新服务地址信息</li>
-<li>通过心跳机制来检测服务是否可用。如果不可用，会主动剔除该服务并将变更推送给相关联的服务</li>
-</ul>
-<h2 id="服务注册与发现的基本流程是怎样的？"><a href="#服务注册与发现的基本流程是怎样的？" class="headerlink" title="服务注册与发现的基本流程是怎样的？"></a>服务注册与发现的基本流程是怎样的？</h2><ul>
-<li>服务注册：每个服务节点在启动运行的时候，会将自己的信息（ip、端口以及服务名字等）上报给注册中心，注册中心负责将地址信息保存起来。</li>
-<li>服务发现：一个服务节点若要调用另外一个服务节点，会直接拿着服务的信息（名字）找注册中心要对方的地址。通常情况下，服务节点拿到地址之后，会在本地缓存一份，保证在注册中心宕机时仍可以正常调用服务。</li>
-</ul>
-<h2 id="常见注册中心"><a href="#常见注册中心" class="headerlink" title="常见注册中心"></a>常见注册中心</h2><p>注册中心是用来管理和维护分布式系统中各个服务的地址和元数据的组件。主要用于实现服务注册和服务发现。<br>Zookeeper、Eureka、Nacos，都是使用java开发的，更适合Java栈。</p>
-<h3 id="CAP理论"><a href="#CAP理论" class="headerlink" title="CAP理论"></a>CAP理论</h3><ul>
-<li>C一致性Consistency：要求系统的数据在分布式环境下保持一致，即所有节点在同一时间看到的数据是相同的。（实现：强一致性、最终一致性）</li>
-<li>A可用性Availability：要求系统任何时候都能够对外提供服务，每个亲求不管成功或失败都有响应。（实现：冗余设计、故障恢复和负载均衡等机制）</li>
-<li>P分区容错性Partition tolerance：系统中任意信息的丢失或失败不会影响系统的继续运作</li>
-</ul>
-<p>Zookeeper保证CP；Eureka保证AP；Nacos支持CP，也支持AP。</p>
-<h3 id="Zookeeper"><a href="#Zookeeper" class="headerlink" title="Zookeeper"></a>Zookeeper</h3><p>官方并没有说它是一个注册中心，但国内Dubbo场景下会使用Zookeeper。<br>但Zookeeper不适合作为注册中心，对于服务发现不合适，服务发现返回了不实的结果也比什么都不返回要好。所以当向注册中心查询服务列表时，我们可以容忍注册中心返回的是几分钟前的注册信息，但不能接受服务直接down掉不可用。【对于注册中心，可用性的要求高于一致性】.</p>
-<p>(未更新完)</p>
-<h3 id="Eureka"><a href="#Eureka" class="headerlink" title="Eureka"></a>Eureka</h3>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2024/05/24/java-weifuwu/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -429,6 +379,14 @@
       
           <p>搭建我的博客成功，莫名其妙走了好多弯路。一堆报错，搞半天下载主题的地址搞错，耽误了好多时间，大概花了一天时间（我是真的很菜了）！昨天在搭建博客中途还去了一个招聘会，感觉好多不靠谱的小公司，还是网申大中厂吧。接下来的时间就要认真找实习以及准备秋招啦！加油！加油！</p>
 
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2024/05/23/day1/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -522,12 +480,14 @@
 
 <p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
 <h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2024/05/22/hello-world/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
