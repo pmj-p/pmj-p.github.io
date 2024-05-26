@@ -28,7 +28,7 @@
 <meta property="og:description" content="论文题目：Attention-based Class-Conditioned Alignment for Multi-Source Domain Adaptive Object Detection 来源：2024&#x2F;03&#x2F;14 arxiv 摘要：目标检测（OD）的领域自适应方法通过促进源域和目标域的特征对齐来减轻分布转移的影响。多源域自适应（MSDA）利用多个带注释的源数据和未标">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2024-05-24T08:32:24.000Z">
-<meta property="article:modified_time" content="2024-05-24T11:41:12.173Z">
+<meta property="article:modified_time" content="2024-05-26T05:05:58.475Z">
 <meta property="article:author" content="向李">
 <meta property="article:tag" content="object detection">
 <meta name="twitter:card" content="summary">
@@ -189,10 +189,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2024-05-24 16:32:24 / 修改时间：19:41:12" itemprop="dateCreated datePublished" datetime="2024-05-24T16:32:24+08:00">2024-05-24</time>
+              <time title="创建时间：2024-05-24 16:32:24" itemprop="dateCreated datePublished" datetime="2024-05-24T16:32:24+08:00">2024-05-24</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-05-26 13:05:58" itemprop="dateModified" datetime="2024-05-26T13:05:58+08:00">2024-05-26</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -230,14 +236,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>568</span>
+              <span>2.4k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
+              <span>2 分钟</span>
             </span>
 
         </div>
@@ -251,7 +257,37 @@
       
         <p>论文题目：Attention-based Class-Conditioned Alignment for Multi-Source Domain Adaptive Object Detection</p>
 <p>来源：2024&#x2F;03&#x2F;14 arxiv</p>
-<p><strong>摘要</strong>：<br>目标检测（OD）的领域自适应方法通过促进源域和目标域的特征对齐来减轻分布转移的影响。多源域自适应（MSDA）利用多个带注释的源数据和未标记的目标数据来提高检测模型的准确性和鲁棒性。大多数SOTA OD MSDA方法都以<strong>类不可知方式</strong>特征对齐（class-agnostic alignment）。这是具有挑战性的，由于跨域的对象外观的变化，对象具有独特的模态信息。最近一种基于原型的方法提出了类对齐（class-wise alignment），但由于噪声伪标签的存在，会对不平衡数据的适应产生负面影响。为了克服这些限制，我们提出了一种基于注意力的MSDA类条件对齐方式（class-conditioned alignment），该方案可以跨域对齐每个对象类别的实例。特别地，一个注意力模块与对抗域分类器（adversarial domain classifier）相结合，来学习领域不变和特定类的实例表示。在多个基准测试MSDA数据集上的实验结果表明，我们的方法优于最先进的方法，并且对类不平衡具有较好的鲁棒性。</p>
+<p><strong>摘要</strong>：<br>目标检测（OD）的领域自适应方法通过促进源域和目标域的特征对齐来减轻分布转移的影响。多源域自适应（MSDA）利用多个带注释的源数据和未标记的目标数据来提高检测模型的准确性和鲁棒性。大多数SOTA OD MSDA方法都以<strong>类不可知方式</strong>（class-agnostic）特征对齐。这是具有挑战性的，由于跨域的对象外观的变化，对象具有独特的模态信息。最近一种基于原型的方法提出了<strong>类对齐</strong>（class-wise alignment），但由于噪声伪标签的存在，会对不平衡数据的适应产生负面影响。为了克服这些限制，我们提出了一种基于注意力的MSDA<strong>类条件对齐方式</strong>（class-conditioned alignment），该方案可以跨域对齐每个对象类别的实例。特别地，一个注意力模块与对抗域分类器（adversarial domain classifier）相结合，来学习领域不变和特定类的实例表示。在多个基准测试MSDA数据集上的实验结果表明，我们的方法优于最先进的方法，并且对类不平衡具有较好的鲁棒性。</p>
+<p>类不可知（class-agnostic）：</p>
+<p>基于原型的类对齐（class-wise alignment）:</p>
+<p>类条件对齐方式（class-conditioned alignment）：</p>
+<h1 id="Intriduction"><a href="#Intriduction" class="headerlink" title="Intriduction"></a>Intriduction</h1><p>目标检测在许多基准问题上显示了优秀的结果，但在训练（源）和测试（目标）数据分布之间存在域偏移时，它们的性能会下降。为了解决这个问题，几种无监督域自适应（UDA）的方法被提出来提高存在域偏移情况下的目标检测性能。</p>
+<p>传统的UDA方法假设源数据只来自单个分布，但在现实场景中，源数据通常来自多个分布，由于天气、地理位置和照明而发生了相当大的域变化。这在OD中叫多源域自适应。</p>
+<p>MSDA具有挑战，因为要处理源之间的差异以及源和目标之间的差异。但是拥有来自多个分布的源数据可以增强自适应，增强泛化，并提高对域偏移的鲁棒性。</p>
+<p>MSDA典型方法：从标记的源数据集中学习特定于任务的知识，同时试图使特征空间域不变，从而更好的推到目标域。目前有几种MSDA方法用于分类任务，但用于OD的还未被探索。这是因为存在多个分布转移的情况下，学习领域不变特征和保留特定任务知识之间的权衡，OD相比分类任务更具有挑战性。</p>
+<p>OD MSDA目前仅有三个方法：</p>
+<ul>
+<li>Divide and Merge Sprindle Network(DMSN) –【1】</li>
+<li>Target Relevant Knowledge Preservation(TRKP) –【2】</li>
+<li>Prototype Mean Teacher(PMT) –【3】</li>
+</ul>
+<p>【1】Yao, X., Zhao, S., Xu, P., Yang, J.: Multi-source domain adaptation for object detection (2021). <a target="_blank" rel="noopener" href="https://doi.org/10.48550/ARXIV.2106.15793">https://doi.org/10.48550/ARXIV.2106.15793</a>, <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2106.15793">https://arxiv.org/abs/2106.15793</a></p>
+<p>【2】Wu, J., Chen, J., He, M., Wang, Y., Li, B., Ma, B., Gan, W., Wu, W., Wang,<br>Y., Huang, D.: Target-relevant knowledge preservation for multi-source domain<br>adaptive object detection (2022). <a target="_blank" rel="noopener" href="https://doi.org/10.48550/ARXIV.2204.07964">https://doi.org/10.48550/ARXIV.2204.07964</a>, <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2204.07964">https://arxiv.org/abs/2204.07964</a></p>
+<p>【3】Belal, A., Meethal, A., Romero, F.P., Pedersoli, M., Granger, E.: Multi-source<br>domain adaptation for object detection with prototype-based mean teacher. In:<br>IEEE&#x2F;CVF Winter Conference on Applications of Computer Vision (WACV). pp.<br>1277–1286 (January 2024)</p>
+<p>DMSN和TRKP主要聚焦于每个源和目标之间的对齐，确保了每个源域与目标域的对齐。但在MSDA中，跨域的对象外观有较大的变化，所以需要关注类对齐，否则会导致域间的类错位。</p>
+<p>PMT提出一种使用原型进行类条件对齐的方法，他们使用特定于类的局部和全局原型来显式地确保域内和跨域对齐。但这种方法存在一些局限性：</p>
+<ul>
+<li>做了一个强有力的假设，即一个原型可以代表一个类的真实分布。但是，一般来说，一个类的表示不是各向同性的。</li>
+<li>依赖有噪声的伪标记目标域来学习原型，由于伪标签的错误积累而导致错位。当样本数少时，表示不足可能导致在源域和目标域上未对齐。在这种情况下，计算全局原型，会位于两个分布的某个中间位置，这不能准确表示实际的类分布。</li>
+</ul>
+<p>上述工作强调了在MSDA中OD需要一个更好的类条件实例对齐机制。本文提出了一种基于注意力的类实例对齐器（ACIA），旨在不依赖原型表示的情况下有效对齐类实例。</p>
+<p>在ACIA中，每个ROI都通过注意操作注入类信息，类信息通过标签嵌入来学习。ACIA提供了更好的跨域的类对齐和对不平衡数据的鲁棒性。</p>
+<p>本文主要贡献：</p>
+<ol>
+<li>提出了一种称为ACIA的MSDA方法，它集成了一个概念上简单的类实例对齐方案。实例对齐是通过一种注意机制实现的，其中来自所有域的实例通过注意组件对相应的类对齐。</li>
+<li>注意力和对抗性域分类器的结合提供了同时具有域不变性和类特定性的实例表示。</li>
+<li>在三个数据集上进行了广泛的实验。</li>
+</ol>
 
     </div>
 
@@ -333,6 +369,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Intriduction"><span class="nav-number">1.</span> <span class="nav-text">Intriduction</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -397,12 +434,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">4k</span>
+    <span title="站点总字数">8k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">4 分钟</span>
+    <span title="站点阅读时长">7 分钟</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
   </div>

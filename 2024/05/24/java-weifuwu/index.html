@@ -20,16 +20,16 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="演变过程 什么是微服务？ 优缺点   微服务之间如何独立通讯？ SpringCloud和dubbo区别在哪？各有什么优缺点？ RPC是什么？ Feign和RPC对比   SpringBoot和SpringCloud 服务治理 为什么需要服务注册与发现？ 服务注册与发现的基本流程是怎样的？ 常见注册中心 CAP理论 Zookeeper Eureka      演变过程单体式-&gt;SOA服务化-">
+  <meta name="description" content="演变过程 什么是微服务？ 优缺点   微服务之间如何独立通讯？ SpringCloud和dubbo区别在哪？各有什么优缺点？ RPC是什么？ Feign和RPC对比   SpringBoot和SpringCloud 服务治理 为什么需要服务注册与发现？ 服务注册与发现的基本流程是怎样的？ 常见注册中心 CAP理论 Zookeeper Eureka Nacos Consul ETCD     配置">
 <meta property="og:type" content="article">
 <meta property="og:title" content="微服务">
 <meta property="og:url" content="http://example.com/2024/05/24/java-weifuwu/index.html">
 <meta property="og:site_name" content="向李的博客">
-<meta property="og:description" content="演变过程 什么是微服务？ 优缺点   微服务之间如何独立通讯？ SpringCloud和dubbo区别在哪？各有什么优缺点？ RPC是什么？ Feign和RPC对比   SpringBoot和SpringCloud 服务治理 为什么需要服务注册与发现？ 服务注册与发现的基本流程是怎样的？ 常见注册中心 CAP理论 Zookeeper Eureka      演变过程单体式-&gt;SOA服务化-">
+<meta property="og:description" content="演变过程 什么是微服务？ 优缺点   微服务之间如何独立通讯？ SpringCloud和dubbo区别在哪？各有什么优缺点？ RPC是什么？ Feign和RPC对比   SpringBoot和SpringCloud 服务治理 为什么需要服务注册与发现？ 服务注册与发现的基本流程是怎样的？ 常见注册中心 CAP理论 Zookeeper Eureka Nacos Consul ETCD     配置">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://example.com/java-weifuwu/compare.png">
 <meta property="article:published_time" content="2024-05-24T07:23:36.000Z">
-<meta property="article:modified_time" content="2024-05-24T08:25:29.967Z">
+<meta property="article:modified_time" content="2024-05-26T05:05:56.756Z">
 <meta property="article:author" content="向李">
 <meta property="article:tag" content="微服务">
 <meta name="twitter:card" content="summary">
@@ -191,10 +191,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2024-05-24 15:23:36 / 修改时间：16:25:29" itemprop="dateCreated datePublished" datetime="2024-05-24T15:23:36+08:00">2024-05-24</time>
+              <time title="创建时间：2024-05-24 15:23:36" itemprop="dateCreated datePublished" datetime="2024-05-24T15:23:36+08:00">2024-05-24</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-05-26 13:05:56" itemprop="dateModified" datetime="2024-05-26T13:05:56+08:00">2024-05-26</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -232,14 +238,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>2.8k</span>
+              <span>5.1k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>3 分钟</span>
+              <span>5 分钟</span>
             </span>
 
         </div>
@@ -271,6 +277,24 @@
 <li><a href="#cap%E7%90%86%E8%AE%BA">CAP理论</a></li>
 <li><a href="#zookeeper">Zookeeper</a></li>
 <li><a href="#eureka">Eureka</a></li>
+<li><a href="#nacos">Nacos</a></li>
+<li><a href="#consul">Consul</a></li>
+<li><a href="#etcd">ETCD</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83">配置中心</a><ul>
+<li><a href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83">为什么需要配置中心？</a></li>
+<li><a href="#springcloud%E5%8F%AF%E4%BB%A5%E9%80%89%E6%8B%A9%E5%93%AA%E4%BA%9B%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83">SpringCloud可以选择哪些配置中心？</a></li>
+<li><a href="#nacos%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83%E7%9A%84%E5%8E%9F%E7%90%86">Nacos配置中心的原理</a><ul>
+<li><a href="#nacos%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%98%AF%E5%A6%82%E4%BD%95%E5%AE%9E%E6%97%B6%E8%8E%B7%E5%8F%96%E5%88%B0nacos%E6%9C%8D%E5%8A%A1%E7%AB%AF%E7%9A%84%E6%9C%80%E6%96%B0%E6%95%B0%E6%8D%AE%E7%9A%84">Nacos客户端是如何实时获取到Nacos服务端的最新数据的</a><ul>
+<li><a href="#%E6%8E%A8%E6%A8%A1%E5%9E%8B">推模型</a></li>
+<li><a href="#%E6%8B%89%E6%A8%A1%E5%9E%8B">拉模型</a></li>
+<li><a href="#%E9%95%BF%E8%BD%AE%E8%AF%A2">长轮询</a></li>
+<li><a href="#%E7%9F%AD%E8%BD%AE%E8%AF%A2%E8%BD%AE%E8%AF%A2">短轮询（轮询）</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -343,9 +367,66 @@
 <li>P分区容错性Partition tolerance：系统中任意信息的丢失或失败不会影响系统的继续运作</li>
 </ul>
 <p>Zookeeper保证CP；Eureka保证AP；Nacos支持CP，也支持AP。</p>
-<h3 id="Zookeeper"><a href="#Zookeeper" class="headerlink" title="Zookeeper"></a>Zookeeper</h3><p>官方并没有说它是一个注册中心，但国内Dubbo场景下会使用Zookeeper。<br>但Zookeeper不适合作为注册中心，对于服务发现不合适，服务发现返回了不实的结果也比什么都不返回要好。所以当向注册中心查询服务列表时，我们可以容忍注册中心返回的是几分钟前的注册信息，但不能接受服务直接down掉不可用。【对于注册中心，可用性的要求高于一致性】.</p>
-<p>(未更新完)</p>
-<h3 id="Eureka"><a href="#Eureka" class="headerlink" title="Eureka"></a>Eureka</h3>
+<h3 id="Zookeeper"><a href="#Zookeeper" class="headerlink" title="Zookeeper"></a>Zookeeper</h3><p>官方并没有说它是一个注册中心，但国内Dubbo场景下会使用Zookeeper。</p>
+<p><strong>工作流程</strong></p>
+<ol>
+<li>服务提供者启动，将服务ip地址注册到配置中心；</li>
+<li>服务消费者第一次调用该服务时，会通过注册中心找到相应的ip地址，并缓存到本地；</li>
+<li>当服务提供者的某台服务器宕机或下线时，相应的ip会从列表中移除。同时注册中心会将新的服务ip地址发送给服务消费者；</li>
+<li>当某个服务的所有服务器都下线了，那么这个服务也就下线了。</li>
+</ol>
+<p>但Zookeeper不适合作为注册中心，对于服务发现不合适，服务发现返回了不实的结果也比什么都不返回要好。所以当向注册中心查询服务列表时，我们可以容忍注册中心返回的是几分钟前的注册信息，但不能接受服务直接down掉不可用。【对于注册中心，可用性的要求高于一致性】.</p>
+<p>Zookeeper可能会出现一种情况，当master节点因为网络故障与其他节点失去联系时，剩余节点会重新进行leader选举。但是这个选举的时间太长，导致服务瘫痪。</p>
+<h3 id="Eureka"><a href="#Eureka" class="headerlink" title="Eureka"></a>Eureka</h3><p><strong>工作流程</strong>：</p>
+<ol>
+<li>Eureka server启动成功，等待服务端注册。如果配置了集群，集群之间<strong>定时</strong>通过Replicate同步注册表，每个Eureka server都存在独立完整的服务注册表信息。</li>
+<li>Eureka client（服务提供者）启动根据配置的Eureka server地址去注册中心注册服务。</li>
+<li>Eureka server会每30s向Eureka server发送一次心跳，证明客户端服务正常。</li>
+<li>当Eureka server 90s每收到Eureka client的心跳，注册中心认为该节点失效，会注销该实例。</li>
+<li>当单位时间内Eureka server统计到大量的Eureka client没有心跳，则认为可能是网络异常，进入自我保护机制，不再剔除没有送上心跳的客户端。【自我保护机制】</li>
+<li>Eureka client定时全量或增量从注册中心获取服务注册表。并且将获取到的信息缓存到本地。</li>
+<li>服务调用时，先从本地缓存找寻调取的服务。如果获取不到，先从注册中心刷新注册表，再同步到本地缓存</li>
+<li>Eureka client获取到目标服务器信息，发起服务调用。</li>
+<li>Eureka client程序关闭时向Eureka server发送取消请求，Eureka server将实例从注册表中删除。</li>
+</ol>
+<p>Eureka server怎么保证高可用性？</p>
+<ul>
+<li>多实例部署：将多个Eureka server部署在不同节点上，可实现高可用性。当一个实例发生故障，其他实例仍然可以提供服务，并保持注册信息的一致性。</li>
+<li>服务注册信息的复制：当一个服务实例向Eureka server注册时，每个Eureka server实例都会复制其他实例的注册信息，以保证数据的一致性。</li>
+<li>自我保护机制：当Eureka server节点在一定时间内没有收到心跳时，会进入自我保护机制。这样可以防止由于网络抖动或其他原因误剔除，进一步提高系统的稳定性。</li>
+</ul>
+<h3 id="Nacos"><a href="#Nacos" class="headerlink" title="Nacos"></a>Nacos</h3><p>支持基于DNS和基于RPC的服务发现。Nacos&#x3D;SpringCloud注册中心+SpringCloud配置中心。</p>
+<h3 id="Consul"><a href="#Consul" class="headerlink" title="Consul"></a>Consul</h3><p>Counsul是HashiCorp公司推出的开源工具，用于实现分布式系统的服务发现与配置，用Go语言编写。</p>
+<h3 id="ETCD"><a href="#ETCD" class="headerlink" title="ETCD"></a>ETCD</h3><p>ETCD是一个Go语言编写的分布式、高可用的一致性键值存储系统，用于提供可靠的分布式键值存储、配置共享和服务发现等功能。</p>
+<h1 id="配置中心"><a href="#配置中心" class="headerlink" title="配置中心"></a>配置中心</h1><h2 id="为什么需要配置中心？"><a href="#为什么需要配置中心？" class="headerlink" title="为什么需要配置中心？"></a>为什么需要配置中心？</h2><p>微服务架构中的每个服务通常都需要配置一些信息，例如数据库连接地址、服务端口、日志级别等。这些配置可能因为不同环境、不同部署实例或者动态运行时需要进行调整和管理。如果一个个去配置运维成本会非常大，这时候就需要一个集中化的配置中心，去管理这些配置。其次线上的项目如果要修改某个配置，不能停服更新，而使用配置中心就可直接进行更新。</p>
+<h2 id="SpringCloud可以选择哪些配置中心？"><a href="#SpringCloud可以选择哪些配置中心？" class="headerlink" title="SpringCloud可以选择哪些配置中心？"></a>SpringCloud可以选择哪些配置中心？</h2><ul>
+<li>SpringCloud Config</li>
+<li>Zookeeper</li>
+<li>Consul</li>
+<li>Etcd</li>
+<li>Apollo</li>
+<li>Nacos</li>
+</ul>
+<h2 id="Nacos配置中心的原理"><a href="#Nacos配置中心的原理" class="headerlink" title="Nacos配置中心的原理"></a>Nacos配置中心的原理</h2><ol>
+<li>配置信息存储：Nacos默认使用内嵌数据库Derby来存储配置信息，还可以采用Mysql等关系型数据库。</li>
+<li>注册配置中心：服务启动时，Nacos client会向Nacos server注册自己的配置信息，这个注册过程就是把配置信息写入存储，并生成版本号。</li>
+<li>获取配置信息：服务运行期间，Nacos Client通过API从Nacos server获取配置信息。Server根据键查找对应的配置信息，并返回给Client。</li>
+<li>监听配置变化：Nacos Server可以通过注册监听器的方式，实现对配置信息的监听。当配置信息发生变化时，Nacos server会通知已注册的监听器，并触发相应的回调方式</li>
+</ol>
+<h3 id="Nacos客户端是如何实时获取到Nacos服务端的最新数据的"><a href="#Nacos客户端是如何实时获取到Nacos服务端的最新数据的" class="headerlink" title="Nacos客户端是如何实时获取到Nacos服务端的最新数据的"></a>Nacos客户端是如何实时获取到Nacos服务端的最新数据的</h3><p>Nacos采用客户端主动拉和长轮询的方式来获取配置数据。</p>
+<ol>
+<li>客户端发送pull请求，服务端检查配置是否有变更；如果没有发生变更，设置一个定时任务，将客户端加入等待列表中。</li>
+<li>若等待时间配置文件发生改变，则立即返回。</li>
+<li>若等待期间没有发生变动，则超时后自动返回给客户端，配置没有更新</li>
+</ol>
+<h4 id="推模型"><a href="#推模型" class="headerlink" title="推模型"></a>推模型</h4><p>客户端于服务端建立TCP长连接，当服务端配置数据有变动，立刻通过建立的长连接将数据推送给客户端。</p>
+<p>优点：实时性，一旦数据发生变动，立即推送变更给客户端；客户端只需要建立连接接收数据，并不需要关心是否有数据变更这类逻辑的处理。</p>
+<p>缺点：可能会因为网络问题，导致不可用，俗称假死。</p>
+<h4 id="拉模型"><a href="#拉模型" class="headerlink" title="拉模型"></a>拉模型</h4><p>客户端主动的向服务端请求拉取配置数据，常见的方式是轮询。</p>
+<p>缺点：无法保证实时性</p>
+<h4 id="长轮询"><a href="#长轮询" class="headerlink" title="长轮询"></a>长轮询</h4><p>客户端发送请求后，服务端不会立即返回请求结果，而是将请求挂起一段时间，如果这段时间服务端配置发生变动，则立即返回给客户端，所是一直无变化，则等到指定超时时间后响应客户端，客户端重新重新发起长链接。</p>
+<h4 id="短轮询（轮询）"><a href="#短轮询（轮询）" class="headerlink" title="短轮询（轮询）"></a>短轮询（轮询）</h4><p>不管服务端配置数据是否有变化，不停的发起请求获取配置。</p>
+
     </div>
 
     
@@ -429,7 +510,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%BC%94%E5%8F%98%E8%BF%87%E7%A8%8B"><span class="nav-number">1.</span> <span class="nav-text">演变过程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E5%BE%AE%E6%9C%8D%E5%8A%A1%EF%BC%9F"><span class="nav-number">2.</span> <span class="nav-text">什么是微服务？</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BC%98%E7%BC%BA%E7%82%B9"><span class="nav-number">2.1.</span> <span class="nav-text">优缺点</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BE%AE%E6%9C%8D%E5%8A%A1%E4%B9%8B%E9%97%B4%E5%A6%82%E4%BD%95%E7%8B%AC%E7%AB%8B%E9%80%9A%E8%AE%AF%EF%BC%9F"><span class="nav-number">3.</span> <span class="nav-text">微服务之间如何独立通讯？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#SpringCloud%E5%92%8Cdubbo%E5%8C%BA%E5%88%AB%E5%9C%A8%E5%93%AA%EF%BC%9F%E5%90%84%E6%9C%89%E4%BB%80%E4%B9%88%E4%BC%98%E7%BC%BA%E7%82%B9%EF%BC%9F"><span class="nav-number">4.</span> <span class="nav-text">SpringCloud和dubbo区别在哪？各有什么优缺点？</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#RPC%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="nav-number">4.1.</span> <span class="nav-text">RPC是什么？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Feign%E5%92%8CRPC%E5%AF%B9%E6%AF%94"><span class="nav-number">4.2.</span> <span class="nav-text">Feign和RPC对比</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#SpringBoot%E5%92%8CSpringCloud"><span class="nav-number">5.</span> <span class="nav-text">SpringBoot和SpringCloud</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9C%8D%E5%8A%A1%E6%B2%BB%E7%90%86"><span class="nav-number">6.</span> <span class="nav-text">服务治理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E4%B8%8E%E5%8F%91%E7%8E%B0%EF%BC%9F"><span class="nav-number">6.1.</span> <span class="nav-text">为什么需要服务注册与发现？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E4%B8%8E%E5%8F%91%E7%8E%B0%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%B5%81%E7%A8%8B%E6%98%AF%E6%80%8E%E6%A0%B7%E7%9A%84%EF%BC%9F"><span class="nav-number">6.2.</span> <span class="nav-text">服务注册与发现的基本流程是怎样的？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E6%B3%A8%E5%86%8C%E4%B8%AD%E5%BF%83"><span class="nav-number">6.3.</span> <span class="nav-text">常见注册中心</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#CAP%E7%90%86%E8%AE%BA"><span class="nav-number">6.3.1.</span> <span class="nav-text">CAP理论</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Zookeeper"><span class="nav-number">6.3.2.</span> <span class="nav-text">Zookeeper</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Eureka"><span class="nav-number">6.3.3.</span> <span class="nav-text">Eureka</span></a></li></ol></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%BC%94%E5%8F%98%E8%BF%87%E7%A8%8B"><span class="nav-number">1.</span> <span class="nav-text">演变过程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E5%BE%AE%E6%9C%8D%E5%8A%A1%EF%BC%9F"><span class="nav-number">2.</span> <span class="nav-text">什么是微服务？</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BC%98%E7%BC%BA%E7%82%B9"><span class="nav-number">2.1.</span> <span class="nav-text">优缺点</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BE%AE%E6%9C%8D%E5%8A%A1%E4%B9%8B%E9%97%B4%E5%A6%82%E4%BD%95%E7%8B%AC%E7%AB%8B%E9%80%9A%E8%AE%AF%EF%BC%9F"><span class="nav-number">3.</span> <span class="nav-text">微服务之间如何独立通讯？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#SpringCloud%E5%92%8Cdubbo%E5%8C%BA%E5%88%AB%E5%9C%A8%E5%93%AA%EF%BC%9F%E5%90%84%E6%9C%89%E4%BB%80%E4%B9%88%E4%BC%98%E7%BC%BA%E7%82%B9%EF%BC%9F"><span class="nav-number">4.</span> <span class="nav-text">SpringCloud和dubbo区别在哪？各有什么优缺点？</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#RPC%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="nav-number">4.1.</span> <span class="nav-text">RPC是什么？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Feign%E5%92%8CRPC%E5%AF%B9%E6%AF%94"><span class="nav-number">4.2.</span> <span class="nav-text">Feign和RPC对比</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#SpringBoot%E5%92%8CSpringCloud"><span class="nav-number">5.</span> <span class="nav-text">SpringBoot和SpringCloud</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9C%8D%E5%8A%A1%E6%B2%BB%E7%90%86"><span class="nav-number">6.</span> <span class="nav-text">服务治理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E4%B8%8E%E5%8F%91%E7%8E%B0%EF%BC%9F"><span class="nav-number">6.1.</span> <span class="nav-text">为什么需要服务注册与发现？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E4%B8%8E%E5%8F%91%E7%8E%B0%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%B5%81%E7%A8%8B%E6%98%AF%E6%80%8E%E6%A0%B7%E7%9A%84%EF%BC%9F"><span class="nav-number">6.2.</span> <span class="nav-text">服务注册与发现的基本流程是怎样的？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E6%B3%A8%E5%86%8C%E4%B8%AD%E5%BF%83"><span class="nav-number">6.3.</span> <span class="nav-text">常见注册中心</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#CAP%E7%90%86%E8%AE%BA"><span class="nav-number">6.3.1.</span> <span class="nav-text">CAP理论</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Zookeeper"><span class="nav-number">6.3.2.</span> <span class="nav-text">Zookeeper</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Eureka"><span class="nav-number">6.3.3.</span> <span class="nav-text">Eureka</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Nacos"><span class="nav-number">6.3.4.</span> <span class="nav-text">Nacos</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Consul"><span class="nav-number">6.3.5.</span> <span class="nav-text">Consul</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ETCD"><span class="nav-number">6.3.6.</span> <span class="nav-text">ETCD</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83"><span class="nav-number">7.</span> <span class="nav-text">配置中心</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83%EF%BC%9F"><span class="nav-number">7.1.</span> <span class="nav-text">为什么需要配置中心？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SpringCloud%E5%8F%AF%E4%BB%A5%E9%80%89%E6%8B%A9%E5%93%AA%E4%BA%9B%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83%EF%BC%9F"><span class="nav-number">7.2.</span> <span class="nav-text">SpringCloud可以选择哪些配置中心？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Nacos%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83%E7%9A%84%E5%8E%9F%E7%90%86"><span class="nav-number">7.3.</span> <span class="nav-text">Nacos配置中心的原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Nacos%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%98%AF%E5%A6%82%E4%BD%95%E5%AE%9E%E6%97%B6%E8%8E%B7%E5%8F%96%E5%88%B0Nacos%E6%9C%8D%E5%8A%A1%E7%AB%AF%E7%9A%84%E6%9C%80%E6%96%B0%E6%95%B0%E6%8D%AE%E7%9A%84"><span class="nav-number">7.3.1.</span> <span class="nav-text">Nacos客户端是如何实时获取到Nacos服务端的最新数据的</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8E%A8%E6%A8%A1%E5%9E%8B"><span class="nav-number">7.3.1.1.</span> <span class="nav-text">推模型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8B%89%E6%A8%A1%E5%9E%8B"><span class="nav-number">7.3.1.2.</span> <span class="nav-text">拉模型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%95%BF%E8%BD%AE%E8%AF%A2"><span class="nav-number">7.3.1.3.</span> <span class="nav-text">长轮询</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%9F%AD%E8%BD%AE%E8%AF%A2%EF%BC%88%E8%BD%AE%E8%AF%A2%EF%BC%89"><span class="nav-number">7.3.1.4.</span> <span class="nav-text">短轮询（轮询）</span></a></li></ol></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -494,12 +575,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">4k</span>
+    <span title="站点总字数">8k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">4 分钟</span>
+    <span title="站点阅读时长">7 分钟</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
   </div>
