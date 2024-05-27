@@ -20,20 +20,22 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="搭建我的博客成功，莫名其妙走了好多弯路。一堆报错，搞半天下载主题的地址搞错，耽误了好多时间，大概花了一天时间（我是真的很菜了）！昨天在搭建博客中途还去了一个招聘会，感觉好多不靠谱的小公司，还是网申大中厂吧。接下来的时间就要认真找实习以及准备秋招啦！加油！加油！">
+  <meta name="description" content="论文题目：Poly Kernel Inception Network for Remote Sensing Detection 来源：2024 CVPR 摘要：遥感图像（RSIs）中的目标检测经常面临几个问题，包括目标尺度的巨大变化和不同范围的上下文（diverse-ranging context）。先前的方法通过大核卷积或空洞卷积来扩展主干网络的空间感受野来解决这些挑战。然而，大核卷积会引入相当">
 <meta property="og:type" content="article">
-<meta property="og:title" content="523">
-<meta property="og:url" content="http://example.com/2024/05/23/day1/index.html">
+<meta property="og:title" content="论文笔记-2">
+<meta property="og:url" content="http://example.com/2024/05/27/paper-meeting-2/index.html">
 <meta property="og:site_name" content="向李的博客">
-<meta property="og:description" content="搭建我的博客成功，莫名其妙走了好多弯路。一堆报错，搞半天下载主题的地址搞错，耽误了好多时间，大概花了一天时间（我是真的很菜了）！昨天在搭建博客中途还去了一个招聘会，感觉好多不靠谱的小公司，还是网申大中厂吧。接下来的时间就要认真找实习以及准备秋招啦！加油！加油！">
+<meta property="og:description" content="论文题目：Poly Kernel Inception Network for Remote Sensing Detection 来源：2024 CVPR 摘要：遥感图像（RSIs）中的目标检测经常面临几个问题，包括目标尺度的巨大变化和不同范围的上下文（diverse-ranging context）。先前的方法通过大核卷积或空洞卷积来扩展主干网络的空间感受野来解决这些挑战。然而，大核卷积会引入相当">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2024-05-23T00:58:44.000Z">
-<meta property="article:modified_time" content="2024-05-23T01:06:20.941Z">
+<meta property="og:image" content="http://example.com/paper-meeting-2/backbone.png">
+<meta property="article:published_time" content="2024-05-27T09:26:25.000Z">
+<meta property="article:modified_time" content="2024-05-27T13:41:28.262Z">
 <meta property="article:author" content="向李">
-<meta property="article:tag" content="碎碎念">
+<meta property="article:tag" content="object detection">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/paper-meeting-2/backbone.png">
 
-<link rel="canonical" href="http://example.com/2024/05/23/day1/">
+<link rel="canonical" href="http://example.com/2024/05/27/paper-meeting-2/">
 
 
 <script id="page-configurations">
@@ -46,7 +48,7 @@
   };
 </script>
 
-  <title>523 | 向李的博客</title>
+  <title>论文笔记-2 | 向李的博客</title>
   
 
 
@@ -167,7 +169,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2024/05/23/day1/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/05/27/paper-meeting-2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/head.jpg">
@@ -180,7 +182,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          523
+          论文笔记-2
         </h1>
 
         <div class="post-meta">
@@ -191,7 +193,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2024-05-23 08:58:44 / 修改时间：09:06:20" itemprop="dateCreated datePublished" datetime="2024-05-23T08:58:44+08:00">2024-05-23</time>
+              <time title="创建时间：2024-05-27 17:26:25 / 修改时间：21:41:28" itemprop="dateCreated datePublished" datetime="2024-05-27T17:26:25+08:00">2024-05-27</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -199,7 +201,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%B0%8F%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">小记</span></a>
+                  <a href="/categories/parper/" itemprop="url" rel="index"><span itemprop="name">parper</span></a>
                 </span>
             </span>
 
@@ -219,8 +221,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2024/05/23/day1/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2024/05/23/day1/" itemprop="commentCount"></span>
+    <a title="valine" href="/2024/05/27/paper-meeting-2/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2024/05/27/paper-meeting-2/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -230,14 +232,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>130</span>
+              <span>1.9k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
+              <span>2 分钟</span>
             </span>
 
         </div>
@@ -249,7 +251,42 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>搭建我的博客成功，莫名其妙走了好多弯路。一堆报错，搞半天下载主题的地址搞错，耽误了好多时间，大概花了一天时间（我是真的很菜了）！昨天在搭建博客中途还去了一个招聘会，感觉好多不靠谱的小公司，还是网申大中厂吧。接下来的时间就要认真找实习以及准备秋招啦！加油！加油！</p>
+        <p>论文题目：Poly Kernel Inception Network for Remote Sensing Detection</p>
+<p>来源：2024 CVPR</p>
+<p><strong>摘要</strong>：<br>遥感图像（RSIs）中的目标检测经常面临几个问题，包括目标尺度的巨大变化和不同范围的上下文（diverse-ranging context）。先前的方法通过大核卷积或空洞卷积来扩展主干网络的空间感受野来解决这些挑战。然而，大核卷积会引入相当大的背景噪声，空洞卷积有可能产生过于稀疏的特征表示。在这篇文章中，作者引入了聚核初始网络（Poly Kernel Inception Network， PKINet）来解决上述挑战。PKINet利用无空洞的多尺度卷积核来提取不同尺度的目标特征并捕获局部上下文。此外，我们还引入了一个并行的CCA（Context Anchor Attention）模块来捕获长距离上下文信息。这两个组件共同作用，提高了PKINet在四个具有挑战性的遥感探测基准上的性能，即DATA-v1.0，DATA-v1.5，HRSC2016，核DIOR-R。</p>
+<h1 id="Introdution"><a href="#Introdution" class="headerlink" title="Introdution"></a>Introdution</h1><p>与通常的水平边界盒的目标检测相比相比，遥感目标检测的目标是生成与目标方向准确对齐的边界盒。大量的研究致力于开发各种定向边界盒（oriented bounding box OBB）检测器，提高OBB的角度预测精度。然而，在改进目标检测的特征提取方面，RSIs的独特特征没有充分得到探索。</p>
+<p>遥感图像包括空中和卫星图像，从鸟瞰视角获得，提供了地球表面的高分辨率视图。RSIs中描述的物体表现出广泛的尺度，从足球场等广阔的物体到相对较小的实体，如车。对这些物体的准备识别不仅依赖于外观，还依赖于背景信息，即所处的周围环境。为了解决对象尺度上的巨大变化，一些方法用显式数据增强技术来提高特征对尺度变化的鲁棒性。有些人采用多尺度特征集成或金字塔特征层来提取丰富的尺度信息。</p>
+<p>但这些方法存在一个局限性：不同尺度的物体的感受野保持相同，不能为较大的物体提供足够的上下文信息。</p>
+<p>LSKNet提出了有选择的扩大较大物体的感受野能捕获更多的场景上下文信息。它将大核卷积和空洞卷积合并到主干网络中来实现。然而，引入大核卷积会引入大量的背景噪声，可能不利于对小物体的准确检测。另一方面，空洞卷积虽然能有效扩大感受野，但可能会会忽略区域内的细粒度细节，导致过于稀疏的特征表示。</p>
+<p>为了应对RSI中目标尺度的巨大变化和多样化的上下文环境所带来的挑战，本文提出了一种强大且轻量级的特征提取骨干网络——Poly Kernel Inception Network（PKINet），用于遥感目标检测。与以前依赖大核或空洞卷积来扩展感受野的方法不同，PKINet并行地排列了多个不同大小的无空洞的深度卷积核，并在不同的感受野中提取密集的纹理特征。这些纹理特征沿通道维度自适应地融合，从而收集局部上下文信息。为了进一步包含长距离的上下文信息，引入了Context Anchor Attention（CAA）机制，它利用全局平均池化和一维条状卷积来捕获远距离像素之间的关系，并增强中心区域内的特征。这两个组件共同工作，促进具有局部和全局上下文信息的自适应特征的提取，从而提高遥感目标检测的性能。</p>
+<p>据我们所知，PKINet是首个在遥感目标检测中探索使用Inception风格的卷积和全局上下文注意力机制的开创性工作，旨在有效应对目标尺度变化和上下文多样性带来的挑战。我们在广泛使用的遥感基准数据集DOTA-v1.0[64]、DOTA-v1.5[64]、HRSC2016[41]和DIOR-R[3]上进行了大量实验，验证了我们的方法的有效性。除了卓越的特征提取能力外，由于战略性地使用了深度卷积和1D卷积，我们的模型相比之前的方法更加<strong>轻量</strong>。这些优势使得PKINet在遥感目标检测任务中更具实际应用价值。</p>
+<h1 id="Related-Work"><a href="#Related-Work" class="headerlink" title="Related Work"></a>Related Work</h1><p>遥感目标检测面临的挑战：具有任意方向和显著的尺度变化</p>
+<p>目前可以从两个角度来解决这个问题：</p>
+<ol>
+<li>关注定向边界框检测（OBB）<ul>
+<li>检测器neck部分引入特征细化技术</li>
+<li>提取旋转的感兴趣区域RoI</li>
+<li>为OBB设计特定的检测头</li>
+</ul>
+</li>
+</ol>
+<p>【问题】相较于通用的水平边界框（HBB）检测器有所改进，但常常因为将水平对象表示与额外的角度参数相结合而获得相对不灵活的对象表示，而面临边界不连续等问题。</p>
+<p>【解决】开发新的对象表示方法以检测OBB。向经典HBB添加四个滑动偏移量来描述多方向对象。或使用一组点来表征有向对象。</p>
+<ol start="2">
+<li>设计针对遥感图像特性的有效特征提取骨干网络<ul>
+<li>数据增强</li>
+<li>多尺度特征融合</li>
+<li>特征金字塔网络增强</li>
+<li>多尺度锚框生成（来提取多尺度特征）</li>
+<li>专门为遥感目标检测设计骨干网络<ul>
+<li>大核卷积：扩大了空间感受野，但不可避免为较小背景引入背景噪声</li>
+<li>本文：新的backbone</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<h1 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h1><p><img src="/paper-meeting-2/backbone.png"></p>
 
     </div>
 
@@ -259,7 +296,7 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/%E7%A2%8E%E7%A2%8E%E5%BF%B5/" rel="tag"># 碎碎念</a>
+              <a href="/tags/object-detection/" rel="tag"># object detection</a>
           </div>
 
         
@@ -268,13 +305,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2024/05/22/hello-world/" rel="prev" title="Hello World">
-      <i class="fa fa-chevron-left"></i> Hello World
+    <a href="/2024/05/24/paper-meeting/" rel="prev" title="论文笔记-1">
+      <i class="fa fa-chevron-left"></i> 论文笔记-1
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2024/05/24/java-weifuwu/" rel="next" title="微服务">
-      微服务 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -334,6 +368,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Introdution"><span class="nav-number">1.</span> <span class="nav-text">Introdution</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Related-Work"><span class="nav-number">2.</span> <span class="nav-text">Related Work</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Methodology"><span class="nav-number">3.</span> <span class="nav-text">Methodology</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
