@@ -161,6 +161,134 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/05/28/java-shiwu/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/head.jpg">
+      <meta itemprop="name" content="向李">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="向李的博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/05/28/java-shiwu/" class="post-title-link" itemprop="url">分布式事务</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-05-28 21:51:18" itemprop="dateCreated datePublished" datetime="2024-05-28T21:51:18+08:00">2024-05-28</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-05-29 09:16:50" itemprop="dateModified" datetime="2024-05-29T09:16:50+08:00">2024-05-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java%E6%A1%86%E6%9E%B6/" itemprop="url" rel="index"><span itemprop="name">Java框架</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2024/05/28/java-shiwu/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2024/05/28/java-shiwu/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>3.2k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>3 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="CAP"><a href="#CAP" class="headerlink" title="CAP"></a>CAP</h1><ul>
+<li>C：一致性Consistence，所有节点访问同一份最新的数据副本</li>
+<li>A：可用性Availability，非故障的节点在合理的时间内返回合理的响应（不是错误或超时）</li>
+<li>P：分区容错性Partition tolerance，分布式系统出现网络分区的时候，仍能够对外提供服务</li>
+</ul>
+<h2 id="什么是网络分区？"><a href="#什么是网络分区？" class="headerlink" title="什么是网络分区？"></a>什么是网络分区？</h2><p>分布式系统中，本来多个节点之间是连通的，但因为某些故障出现问题，导致节点之间不连通，整个网络分成几块。<br>当网络出现分区时，我们要继续服务，强一致性和可用性就只能2选1。P时必须要实现的，决定了P再选择是A还是C。</p>
+<p>【分布式系统理论上不可能选择CA，只能选择CP和AP。选择的关键在于业务场景，银行一般保证CP】</p>
+<h2 id="为什么不能保证CA？"><a href="#为什么不能保证CA？" class="headerlink" title="为什么不能保证CA？"></a>为什么不能保证CA？</h2><ul>
+<li>因为当出现分区，某个节点需要进行读写操作，为了保证C，就必须保证其他节点不能进行读写，就和A发生冲突了。如果保证A，其他节点正常读写就不能保证C。</li>
+</ul>
+<h1 id="BASE"><a href="#BASE" class="headerlink" title="BASE"></a>BASE</h1><ul>
+<li>BA：基本可用Basically Available，指分布式系统出现不可预知故障的时候，允许损失部分可用性。<ul>
+<li>响应时间上的损失，处理用户的请求时间从0.5s变为3s</li>
+<li>系统功能上的损失，由于系统访问量突然剧增，系统的部分非核心功能无法使用</li>
+</ul>
+</li>
+<li>S：软状态Soft-state，允许系统中的数据存在中间状态，并认为该中间状态的存在不会影响系统的整体可用性（即允许系统在不同节点的数据副本之间进行数据同步的过程存在延时）</li>
+<li>E：最终一致性Eventually Consistent，系统中所有的数据副本，在经过一段时间的同步后，最终能达到一个一致的状态。</li>
+</ul>
+<p>BASE对CAP中一致性C和可用性A权衡的结果，对AP方案的一个补充。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2024/05/28/java-shiwu/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/2024/05/27/paper-meeting-2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -184,10 +312,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2024-05-27 17:26:25 / 修改时间：21:41:28" itemprop="dateCreated datePublished" datetime="2024-05-27T17:26:25+08:00">2024-05-27</time>
+              <time title="创建时间：2024-05-27 17:26:25" itemprop="dateCreated datePublished" datetime="2024-05-27T17:26:25+08:00">2024-05-27</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-05-28 16:12:20" itemprop="dateModified" datetime="2024-05-28T16:12:20+08:00">2024-05-28</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -245,7 +379,7 @@
 <p>但这些方法存在一个局限性：不同尺度的物体的感受野保持相同，不能为较大的物体提供足够的上下文信息。</p>
 <p>LSKNet提出了有选择的扩大较大物体的感受野能捕获更多的场景上下文信息。它将大核卷积和空洞卷积合并到主干网络中来实现。然而，引入大核卷积会引入大量的背景噪声，可能不利于对小物体的准确检测。另一方面，空洞卷积虽然能有效扩大感受野，但可能会会忽略区域内的细粒度细节，导致过于稀疏的特征表示。</p>
 <p>为了应对RSI中目标尺度的巨大变化和多样化的上下文环境所带来的挑战，本文提出了一种强大且轻量级的特征提取骨干网络——Poly Kernel Inception Network（PKINet），用于遥感目标检测。与以前依赖大核或空洞卷积来扩展感受野的方法不同，PKINet并行地排列了多个不同大小的无空洞的深度卷积核，并在不同的感受野中提取密集的纹理特征。这些纹理特征沿通道维度自适应地融合，从而收集局部上下文信息。为了进一步包含长距离的上下文信息，引入了Context Anchor Attention（CAA）机制，它利用全局平均池化和一维条状卷积来捕获远距离像素之间的关系，并增强中心区域内的特征。这两个组件共同工作，促进具有局部和全局上下文信息的自适应特征的提取，从而提高遥感目标检测的性能。</p>
-<p>据我们所知，PKINet是首个在遥感目标检测中探索使用Inception风格的卷积和全局上下文注意力机制的开创性工作，旨在有效应对目标尺度变化和上下文多样性带来的挑战。我们在广泛使用的遥感基准数据集DOTA-v1.0[64]、DOTA-v1.5[64]、HRSC2016[41]和DIOR-R[3]上进行了大量实验，验证了我们的方法的有效性。除了卓越的特征提取能力外，由于战略性地使用了深度卷积和1D卷积，我们的模型相比之前的方法更加<strong>轻量</strong>。这些优势使得PKINet在遥感目标检测任务中更具实际应用价值。</p>
+<p>据我们所知，PKINet是首个在遥感目标检测中探索使用Inception风格的卷积和全局上下文注意力机制的开创性工作，旨在有效应对目标尺度变化和上下文多样性带来的挑战。我们在广泛使用的遥感基准数据集DOTA-v1.0、DOTA-v1.5、HRSC2016和DIOR-R上进行了大量实验，验证了我们的方法的有效性。除了卓越的特征提取能力外，由于战略性地使用了深度卷积和1D卷积，我们的模型相比之前的方法更加<strong>轻量</strong>。这些优势使得PKINet在遥感目标检测任务中更具实际应用价值。</p>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2024/05/27/paper-meeting-2/#more" rel="contents">
@@ -420,7 +554,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-05-26 13:12:56" itemprop="dateModified" datetime="2024-05-26T13:12:56+08:00">2024-05-26</time>
+                <time title="修改时间：2024-05-28 10:48:46" itemprop="dateModified" datetime="2024-05-28T10:48:46+08:00">2024-05-28</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -452,14 +586,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>4.8k</span>
+              <span>5.1k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>4 分钟</span>
+              <span>5 分钟</span>
             </span>
 
         </div>
@@ -783,7 +917,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">5</span>
+          <span class="site-state-item-count">6</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -796,7 +930,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-count">4</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -832,12 +966,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">10k</span>
+    <span title="站点总字数">13k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">9 分钟</span>
+    <span title="站点阅读时长">12 分钟</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
   </div>
