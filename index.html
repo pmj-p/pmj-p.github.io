@@ -187,6 +187,22 @@
 
               <time title="创建时间：2024-06-29 10:28:47" itemprop="dateCreated datePublished" datetime="2024-06-29T10:28:47+08:00">2024-06-29</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-06-30 16:38:39" itemprop="dateModified" datetime="2024-06-30T16:38:39+08:00">2024-06-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/parper/" itemprop="url" rel="index"><span itemprop="name">parper</span></a>
+                </span>
+            </span>
 
           
   
@@ -208,14 +224,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>0</span>
+              <span>7.7k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
+              <span>7 分钟</span>
             </span>
 
         </div>
@@ -227,7 +243,24 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          
+          <p>（第一次纯英文报告，记录一下！）</p>
+<p>Good evening, dear experts and scholars. My name is Pan Mengjie from Zhejiang University of Technology. It’s my great honor to share with my paper, which was accepted at IJCNN. The title is “IAFI-FCOS: An Intra- and Across-layer Feature Interaction FCOS Model for Lesion Detection in CT Images.” The main work of this paper is to design a lesion detector to detect the lesions in medical CT images. Next, I will introduce it from the following five aspects.</p>
+<p>The first part is the research background and motivation. Cancer is a major global public health problem, and the graph visualizes new cancer incidence and mortality by 2022, showing that nearly half of the world’s new cancer cases and deaths occur in Asia. In Africa and some Asian regions, although the incidence of cancer is not very high, cancer mortality is high, in part because many patients are diagnosed with cancer at an advanced stage, resulting in a higher mortality rate. If you can in the occurrence of lesions, timely treatment will improve the survival rate.</p>
+<p>When a patient is unwell, doctors usually use medical images to diagnose,  for example, lesions in CT images may deteriorate into cancer. However, in the early stage of cancer, the characteristics of the lesions are not obvious, and doctors often rely on their past experience when screening. At the same time, when screening a large number of CT images, it will consume time and energy, which will lead to misdiagnosis and missed detection. The use of computer-aided detection can help doctors automatically identify the location of suspicious lesions and reduce their workload. CADe is the use of object detection technology to detect the lesion area. Object detection is mainly studied on natural images and is generally divided into three categories: two-stage, one-stage, and transformer structure. However, the direct application of these algorithms to the field of medical imaging does not guarantee satisfactory performance, because the differences between medical images and natural images can lead to the final lesion detection results being less accurate.</p>
+<p>We have compiled papers related to computer-aided detection and summarized that the current lesion detection task faces several main challenges: firstly, lesion detection not only relies on features specific to the lesion region, but also requires the assistance of surrounding tissue information. For example, in the pancreatic tumor data set, mucous cystic tumors are generally located in the pancreatic body and tail, and the introduction of this location information can better assist the identification of lesions. Second, the traditional object detector has two shortcomings in multi-scale feature fusion. One is that direct fuse of different layers of features reduces the representation of multi-scale features, and the other is that top-down transfer of features leads to loss of information. The figure visualizes the comparison between easily detectable and undetectable lesions in pancreatic data. When features are fused, if the feature information of hard-to-detect lesions is lost, the overall accuracy of the model will be reduced. These problems can cause small lesions and borderless lesions to be difficult to identify normally.</p>
+<p>To address the above problems, we propose a lesion detection based on a one stage detector, which improves the accuracy of lesion and can assist radiologists to  achieve faster and more accurate early cancer screening. The main contribution of this paper is that we propose intra-layer context augmentation block and cross-layer feature weighting block to solve these two problems respectively. Finally, we utilize the adaptive fusion mechanism to fuse different semantic features. The proposed IAF-FCOS model obtained good results on both pancreas datasets and deeplesion datasets.</p>
+<p>The second part is the methodology. First, as shown in the figure, is a traditional detection framework, which is mainly composed of backbone, neck and head. The backbone is used to extract multi-scale features, the neck fuses multi-scale feature information, and head outputs overall prediction results, such as detection boxes and categories. The Neck part plays an important role in the detection model. The traditional neck generally uses the structure of FPN, which sums up different layers of features from top to bottom. This structure does not consider the two challenges mentioned above. Therefore, we proposed intra-layer context augmentation block to alleviate the problem of not sufficiently considering the correlation between the lesion area and the surrounding tissues, and cross-layer feature weighting block to reduce the loss of detail information.</p>
+<p>This figure shows our overall network structure, compared with the traditional detection framework, we mainly adjusted and optimized for the neck part. The traditional FPN structure is replaced by using our proposed ICAF-FPN. The ICAF-FPN is mainly divided into three parts: ICA Block, AFW Block, and AFF. Step one: After the backbone network outputs the multiscale features, the feature maps of each layer are processed by the ICA Block to obtain the intra-layer feature IFi, respectively. The ICA block mainly consists of the Multi-head dilated Attention and MLP. Step 2: The multilayer feature maps are input into AFW Block together and layer 2 is introduced because layer 2 retains more small target feature information. the AFW Block consists of the across-layer feature gather (AFG) block and the split feature weighting (Split FW ) block, which outputs the inter-layer fusion feature AFi; Step 3: we use the residual structure to supplement the feature information to get Li. Finally: the adaptive feature fusion mechanism is used to fuse these three different semantic features. Above is the specific flow of IAFI-FPN.</p>
+<p>I will expand on the details of an ICA Block and AFW Block. The ICA Block sets different dilation rates for different heads of multi-head  attention, which captures the context information of different receptive fields and establishes the dependency between pixels. Then AFW Block aligns the multilayer features using the AFG Block and extracts global features using biaxial attention. The global features are weighted to different layers using Split FW Block and finally aligned features are fused. The details of the method can be followed up by reading our paper.</p>
+<p>Then, the third section briefly describes the experiments and configurations. We performed experimental analysis on two datasets, a private pancreas dataset and a public deeplesion dataset. All data are pre-processed according to expert recommendations. The evaluation matrices of the experiments mainly use the Average Precision (AP) metric and the Free-Response Receiver Operating Characteristic (FROC), and the specific application details are described in the paper and PPT accordingly.</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2024/06/29/My-paper-pre/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -1391,7 +1424,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-count">12</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -1427,12 +1460,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">22k</span>
+    <span title="站点总字数">29k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">20 分钟</span>
+    <span title="站点阅读时长">27 分钟</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
   </div>
