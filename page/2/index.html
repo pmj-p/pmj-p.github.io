@@ -161,6 +161,131 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/05/24/java-weifuwu/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/head.jpg">
+      <meta itemprop="name" content="向李">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="向李的博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/05/24/java-weifuwu/" class="post-title-link" itemprop="url">微服务</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-05-24 15:23:36" itemprop="dateCreated datePublished" datetime="2024-05-24T15:23:36+08:00">2024-05-24</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-05-28 10:48:46" itemprop="dateModified" datetime="2024-05-28T10:48:46+08:00">2024-05-28</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java%E6%A1%86%E6%9E%B6/" itemprop="url" rel="index"><span itemprop="name">Java框架</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2024/05/24/java-weifuwu/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2024/05/24/java-weifuwu/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>5.1k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>5 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="演变过程"><a href="#演变过程" class="headerlink" title="演变过程"></a>演变过程</h1><p>单体式-&gt;SOA服务化-&gt;微服务</p>
+<ol>
+<li>单体服务是所有项目最开始的样子，将整个应用程序作为一个单一的、紧耦合的单元进行开发和部署，共享一个数据库和代码库。（缺点：随着规模变大，难以维护、部署和扩展）</li>
+<li>SOA（Service-Oriented Archiecture）面向服务的架构是一种软件架构设计原则，强调将应用程序拆分为相互独立的服务，通过标准化接口通信。</li>
+<li>微服务在SOA的基础上发展过来，微服务是一种特定的架构风格。将应用拆分为小型、自治且松耦合的服务。（使应用程序更加灵活、可维护）微服务可以看作是对SOA思想的一种具体实践方式，但不等同于SOA</li>
+</ol>
+<h1 id="什么是微服务？"><a href="#什么是微服务？" class="headerlink" title="什么是微服务？"></a>什么是微服务？</h1><p>微服务就是单个轻量级服务，专注某一个功能的实现。例如登录服务只专注于用户登录方面的功能。<br>微服务架构其实就是一种架构风格，它提倡将单一的应用程序划分成多个小服务，每个服务专注于自己的功能，同时不同服务之间也可以相互协调。解决单个系统的不足，满足越来越复杂的业务需求。不会因为其中一个业务出现问题导致整个程序死掉。</p>
+<h2 id="优缺点"><a href="#优缺点" class="headerlink" title="优缺点"></a>优缺点</h2><p><strong>优点</strong>：</p>
+<ul>
+<li>微服务一个功能受损，对其他功能影响不是很大，可以快速定位问题</li>
+<li>松耦合，聚集单一业务功能，便利集中，功能小而精</li>
+</ul>
+<p><strong>缺点</strong>：</p>
+<ul>
+<li>随着服务数量增加，管理复杂，部署复杂</li>
+<li>数据一致性问题，性能监控</li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2024/05/24/java-weifuwu/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/2024/05/23/day1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -433,20 +558,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">12</span>
+          <span class="site-state-item-count">13</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-count">7</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-count">13</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
