@@ -20,20 +20,20 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="论文题目：Attention-based Class-Conditioned Alignment for Multi-Source Domain Adaptive Object Detection 来源：2024&#x2F;03&#x2F;14 arxiv 摘要：目标检测（OD）的领域自适应方法通过促进源域和目标域的特征对齐来减轻分布转移的影响。多源域自适应（MSDA）利用多个带注释的源数据和未标">
+  <meta name="description" content="论文题目：Attention-based Class-Conditioned Alignment for Multi-Source Domain Adaptive Object Detection 来源：2024&#x2F;03&#x2F;14 arxiv 摘要： 目标检测（OD）的领域自适应方法通过促进源域和目标域的特征对齐来减轻分布转移的影响。多源域自适应（MSDA）利用多个带注释的源数据和未标记的目标数据来提高">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Attention-based Class-Conditioned Alignment for Multi-Source Domain Adaptive Object Detection">
 <meta property="og:url" content="http://example.com/2024/05/24/paper-meeting/index.html">
 <meta property="og:site_name" content="向李的博客">
-<meta property="og:description" content="论文题目：Attention-based Class-Conditioned Alignment for Multi-Source Domain Adaptive Object Detection 来源：2024&#x2F;03&#x2F;14 arxiv 摘要：目标检测（OD）的领域自适应方法通过促进源域和目标域的特征对齐来减轻分布转移的影响。多源域自适应（MSDA）利用多个带注释的源数据和未标">
+<meta property="og:description" content="论文题目：Attention-based Class-Conditioned Alignment for Multi-Source Domain Adaptive Object Detection 来源：2024&#x2F;03&#x2F;14 arxiv 摘要： 目标检测（OD）的领域自适应方法通过促进源域和目标域的特征对齐来减轻分布转移的影响。多源域自适应（MSDA）利用多个带注释的源数据和未标记的目标数据来提高">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/paper-meeting/ACIA.png">
+<meta property="og:image" content="http://example.com/2024/05/24/paper-meeting/ACIA.png">
 <meta property="article:published_time" content="2024-05-24T08:32:24.000Z">
 <meta property="article:modified_time" content="2024-06-28T12:16:51.711Z">
 <meta property="article:author" content="向李">
 <meta property="article:tag" content="object detection">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/paper-meeting/ACIA.png">
+<meta name="twitter:image" content="http://example.com/2024/05/24/paper-meeting/ACIA.png">
 
 <link rel="canonical" href="http://example.com/2024/05/24/paper-meeting/">
 
@@ -258,24 +258,31 @@
 
       
         <p>论文题目：Attention-based Class-Conditioned Alignment for Multi-Source Domain Adaptive Object Detection</p>
-<p>来源：2024&#x2F;03&#x2F;14 arxiv</p>
-<p><strong>摘要</strong>：<br>目标检测（OD）的领域自适应方法通过促进源域和目标域的特征对齐来减轻分布转移的影响。多源域自适应（MSDA）利用多个带注释的源数据和未标记的目标数据来提高检测模型的准确性和鲁棒性。大多数SOTA OD MSDA方法都以<strong>类不可知方式</strong>（class-agnostic）特征对齐。这是具有挑战性的，由于跨域的对象外观的变化，对象具有独特的模态信息。最近一种基于原型的方法提出了<strong>类对齐</strong>（class-wise alignment），但由于噪声伪标签的存在，会对不平衡数据的适应产生负面影响。为了克服这些限制，我们提出了一种基于注意力的MSDA<strong>类条件对齐方式</strong>（class-conditioned alignment），该方案可以跨域对齐每个对象类别的实例。特别地，一个注意力模块与对抗域分类器（adversarial domain classifier）相结合，来学习领域不变和特定类的实例表示。在多个基准测试MSDA数据集上的实验结果表明，我们的方法优于最先进的方法，并且对类不平衡具有较好的鲁棒性。</p>
+<p>来源：2024/03/14 arxiv</p>
+<p><strong>摘要</strong>：<br>
+目标检测（OD）的领域自适应方法通过促进源域和目标域的特征对齐来减轻分布转移的影响。多源域自适应（MSDA）利用多个带注释的源数据和未标记的目标数据来提高检测模型的准确性和鲁棒性。大多数SOTA OD MSDA方法都以<strong>类不可知方式</strong>（class-agnostic）特征对齐。这是具有挑战性的，由于跨域的对象外观的变化，对象具有独特的模态信息。最近一种基于原型的方法提出了<strong>类对齐</strong>（class-wise alignment），但由于噪声伪标签的存在，会对不平衡数据的适应产生负面影响。为了克服这些限制，我们提出了一种基于注意力的MSDA<strong>类条件对齐方式</strong>（class-conditioned alignment），该方案可以跨域对齐每个对象类别的实例。特别地，一个注意力模块与对抗域分类器（adversarial domain classifier）相结合，来学习领域不变和特定类的实例表示。在多个基准测试MSDA数据集上的实验结果表明，我们的方法优于最先进的方法，并且对类不平衡具有较好的鲁棒性。</p>
 <p>类不可知（class-agnostic）：</p>
 <p>基于原型的类对齐（class-wise alignment）:</p>
 <p>类条件对齐方式（class-conditioned alignment）：</p>
-<h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p>目标检测在许多基准问题上显示了优秀的结果，但在训练（源）和测试（目标）数据分布之间存在域偏移时，它们的性能会下降。为了解决这个问题，几种无监督域自适应（UDA）的方法被提出来提高存在域偏移情况下的目标检测性能。</p>
+<h1>Introduction</h1>
+<p>目标检测在许多基准问题上显示了优秀的结果，但在训练（源）和测试（目标）数据分布之间存在域偏移时，它们的性能会下降。为了解决这个问题，几种无监督域自适应（UDA）的方法被提出来提高存在域偏移情况下的目标检测性能。</p>
 <p>传统的UDA方法假设源数据只来自单个分布，但在现实场景中，源数据通常来自多个分布，由于天气、地理位置和照明而发生了相当大的域变化。这在OD中叫多源域自适应。</p>
 <p>MSDA具有挑战，因为要处理源之间的差异以及源和目标之间的差异。但是拥有来自多个分布的源数据可以增强自适应，增强泛化，并提高对域偏移的鲁棒性。</p>
 <p>MSDA典型方法：从标记的源数据集中学习特定于任务的知识，同时试图使特征空间域不变，从而更好的推到目标域。目前有几种MSDA方法用于分类任务，但用于OD的还未被探索。这是因为存在多个分布转移的情况下，学习领域不变特征和保留特定任务知识之间的权衡，OD相比分类任务更具有挑战性。</p>
 <p>OD MSDA目前仅有三个方法：</p>
 <ul>
-<li>Divide and Merge Sprindle Network(DMSN) –【1】</li>
-<li>Target Relevant Knowledge Preservation(TRKP) –【2】</li>
-<li>Prototype Mean Teacher(PMT) –【3】</li>
+<li>Divide and Merge Sprindle Network(DMSN) --【1】</li>
+<li>Target Relevant Knowledge Preservation(TRKP) --【2】</li>
+<li>Prototype Mean Teacher(PMT) --【3】</li>
 </ul>
 <p>【1】Yao, X., Zhao, S., Xu, P., Yang, J.: Multi-source domain adaptation for object detection (2021). <a target="_blank" rel="noopener" href="https://doi.org/10.48550/ARXIV.2106.15793">https://doi.org/10.48550/ARXIV.2106.15793</a>, <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2106.15793">https://arxiv.org/abs/2106.15793</a></p>
-<p>【2】Wu, J., Chen, J., He, M., Wang, Y., Li, B., Ma, B., Gan, W., Wu, W., Wang,<br>Y., Huang, D.: Target-relevant knowledge preservation for multi-source domain<br>adaptive object detection (2022). <a target="_blank" rel="noopener" href="https://doi.org/10.48550/ARXIV.2204.07964">https://doi.org/10.48550/ARXIV.2204.07964</a>, <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2204.07964">https://arxiv.org/abs/2204.07964</a></p>
-<p>【3】Belal, A., Meethal, A., Romero, F.P., Pedersoli, M., Granger, E.: Multi-source<br>domain adaptation for object detection with prototype-based mean teacher. In:<br>IEEE&#x2F;CVF Winter Conference on Applications of Computer Vision (WACV). pp.<br>1277–1286 (January 2024)</p>
+<p>【2】Wu, J., Chen, J., He, M., Wang, Y., Li, B., Ma, B., Gan, W., Wu, W., Wang,<br>
+Y., Huang, D.: Target-relevant knowledge preservation for multi-source domain<br>
+adaptive object detection (2022). <a target="_blank" rel="noopener" href="https://doi.org/10.48550/ARXIV.2204.07964">https://doi.org/10.48550/ARXIV.2204.07964</a>, <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2204.07964">https://arxiv.org/abs/2204.07964</a></p>
+<p>【3】Belal, A., Meethal, A., Romero, F.P., Pedersoli, M., Granger, E.: Multi-source<br>
+domain adaptation for object detection with prototype-based mean teacher. In:<br>
+IEEE/CVF Winter Conference on Applications of Computer Vision (WACV). pp.<br>
+1277–1286 (January 2024)</p>
 <p>DMSN和TRKP主要聚焦于每个源和目标之间的对齐，确保了每个源域与目标域的对齐。但在MSDA中，跨域的对象外观有较大的变化，所以需要关注类对齐，否则会导致域间的类错位。</p>
 <p>PMT提出一种使用原型进行类条件对齐的方法，他们使用特定于类的局部和全局原型来显式地确保域内和跨域对齐。但这种方法存在一些局限性：</p>
 <ul>
@@ -290,18 +297,22 @@
 <li>注意力和对抗性域分类器的结合提供了同时具有域不变性和类特定性的实例表示。</li>
 <li>在三个数据集上进行了广泛的实验。</li>
 </ol>
-<h1 id="Method"><a href="#Method" class="headerlink" title="Method"></a>Method</h1><p><img src="/paper-meeting/ACIA.png"></p>
+<h1>Method</h1>
+<p><img src="/2024/05/24/paper-meeting/ACIA.png" alt></p>
 <p>提出的ACIA模型基于Mean-Teacher（MT）模型，MT训练分为两个阶段进行：</p>
 <ul>
-<li>Student<ul>
+<li>Student
+<ul>
 <li>在所有源域数据上监督训练student model</li>
 <li>称为burn-in</li>
 </ul>
 </li>
-<li>Teacher<ul>
+<li>Teacher
+<ul>
 <li>teacher model权重初始化为student model的权重</li>
 <li>源数据继续监督训练student model</li>
-<li>目标数据为图像创建两个增强版本<ul>
+<li>目标数据为图像创建两个增强版本
+<ul>
 <li>弱增强：teacher model利用弱增强版本生成伪标签（图像重新缩放、水平翻转）</li>
 <li>强增强：student model根据伪标签作为真实值来计算损失，训练多源鉴别器和类条件实例鉴别器(颜色抖动、灰度、高斯模糊、切割patch)</li>
 </ul>
@@ -311,17 +322,21 @@
 </li>
 </ul>
 <p>【推理时使用teacher model】</p>
-<h2 id="Image-level-Alignment"><a href="#Image-level-Alignment" class="headerlink" title="Image-level Alignment"></a>Image-level Alignment</h2><p>在域自适应问题中，任务特定的知识是从源域学习出来的，但是，为了使模型在目标域上表现良好，必须学习一个域不变的表示。</p>
+<h2 id="Image-level-Alignment">Image-level Alignment</h2>
+<p>在域自适应问题中，任务特定的知识是从源域学习出来的，但是，为了使模型在目标域上表现良好，必须学习一个域不变的表示。</p>
 <p>UDA中，是通过使用gradient-reversal layer（GRL）将一个域鉴别器（二分类）附加到主干的输出上来实现的。这导致了主干和域鉴别器之间的最小和最大优化博弈，导致域不变特征表示。</p>
 <p>而MSDA中，源数据来自于不同的分布，所以使用了多类鉴别器，而不是二分类。</p>
-<h2 id="Instance-level-Alignment"><a href="#Instance-level-Alignment" class="headerlink" title="Instance-level Alignment"></a>Instance-level Alignment</h2><p>实例对齐是以class-wise的方式执行的，class-wise对齐有助于对齐来自同一类的对象的特征，而不考虑在域内和跨域之间的视觉属性（外观、比例、方向和其他对象特征）的差异。即使存在类不平衡的情况下，代表不足的类也将专注于确保域内和跨域的对齐。</p>
+<h2 id="Instance-level-Alignment">Instance-level Alignment</h2>
+<p>实例对齐是以class-wise的方式执行的，class-wise对齐有助于对齐来自同一类的对象的特征，而不考虑在域内和跨域之间的视觉属性（外观、比例、方向和其他对象特征）的差异。即使存在类不平衡的情况下，代表不足的类也将专注于确保域内和跨域的对齐。</p>
 <p>在没有class-wise时，同一类别的类特征在不同领域之间的分离度很高。PMT是在域自适应（OD）中首次实现类别对齐的多源域自适应（MSDA）方法，它使用全局和局部原型进行类别对齐。</p>
 <ul>
 <li>局部原型确保了领域内的对齐，</li>
 <li>而全局原型确保了跨领域的对齐。</li>
 </ul>
 <p>与为每个对象类别和每个领域使用原型不同，我们使用了一个高效的基于注意力的模块来确保类别实例对齐。</p>
-<h1 id="PMT"><a href="#PMT" class="headerlink" title="PMT"></a>PMT</h1><p>多域鉴别器：为了产生域不变特征，在网络中引入一个鉴别器<br>原型网络：保存特定领域的信息</p>
+<h1>PMT</h1>
+<p>多域鉴别器：为了产生域不变特征，在网络中引入一个鉴别器<br>
+原型网络：保存特定领域的信息</p>
 
     </div>
 
@@ -406,7 +421,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Introduction"><span class="nav-number">1.</span> <span class="nav-text">Introduction</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Method"><span class="nav-number">2.</span> <span class="nav-text">Method</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Image-level-Alignment"><span class="nav-number">2.1.</span> <span class="nav-text">Image-level Alignment</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Instance-level-Alignment"><span class="nav-number">2.2.</span> <span class="nav-text">Instance-level Alignment</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#PMT"><span class="nav-number">3.</span> <span class="nav-text">PMT</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">1.</span> <span class="nav-text">Introduction</span></a></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">2.</span> <span class="nav-text">Method</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Image-level-Alignment"><span class="nav-number">2.1.</span> <span class="nav-text">Image-level Alignment</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Instance-level-Alignment"><span class="nav-number">2.2.</span> <span class="nav-text">Instance-level Alignment</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">3.</span> <span class="nav-text">PMT</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -471,7 +486,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">30k</span>
+    <span title="站点总字数">29k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>

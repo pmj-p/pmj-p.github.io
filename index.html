@@ -224,7 +224,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>158</span>
+              <span>153</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -243,21 +243,29 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="git和github连接时注意配置连接"><a href="#git和github连接时注意配置连接" class="headerlink" title="git和github连接时注意配置连接"></a>git和github连接时注意配置连接</h1><h2 id="1、本地生成公钥"><a href="#1、本地生成公钥" class="headerlink" title="1、本地生成公钥"></a>1、本地生成公钥</h2><ol>
-<li><p>启动Git Bash窗口</p>
+          <h1>git和github连接时注意配置连接</h1>
+<h2 id="1、本地生成公钥">1、本地生成公钥</h2>
+<ol>
+<li>
+<p>启动Git Bash窗口</p>
 </li>
-<li><p>cd ~&#x2F;.ssh</p>
+<li>
+<p>cd ~/.ssh</p>
 </li>
-<li><p>备份</p>
-<p> <code>mkdir key_backup</code></p>
-<p> <code>mv id_rsa* key_backup</code></p>
+<li>
+<p>备份</p>
+<p><code>mkdir key_backup</code></p>
+<p><code>mv id_rsa* key_backup</code></p>
 </li>
-<li><p>生成新的key</p>
-<p> <code>ssh-keygen -t rsa -C &quot;email&quot;</code></p>
+<li>
+<p>生成新的key</p>
+<p><code>ssh-keygen -t rsa -C &quot;email&quot;</code></p>
 </li>
 </ol>
-<h2 id="2、github中配置公钥"><a href="#2、github中配置公钥" class="headerlink" title="2、github中配置公钥"></a>2、github中配置公钥</h2><p><img src="/vscode-leetcode-git/ssh_github.png"></p>
-<h1 id="gitc常用命令"><a href="#gitc常用命令" class="headerlink" title="gitc常用命令"></a>gitc常用命令</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git init</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="2、github中配置公钥">2、github中配置公钥</h2>
+<p><img src="/2024/07/01/vscode-leetcode-git/ssh_github.png" alt></p>
+<h1>gitc常用命令</h1>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git init</span><br><span class="line"></span><br></pre></td></tr></table></figure>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2024/07/01/vscode-leetcode-git/#more" rel="contents">
@@ -347,7 +355,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>7.9k</span>
+              <span>7.7k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -367,15 +375,17 @@
 
       
           <p>（第一次纯英文报告，记录一下！）</p>
-<p>Good evening, dear experts&#x2F;ˈekspɜːrts&#x2F; and scholars. My name is Pan Mengjie from Zhejiang University of Technology. It’s my great honor to share with my paper, which was accepted&#x2F;əkˈseptɪd&#x2F; at IJCNN. The title is “IAFI-FCOS: Intra- and Across-layer Feature Interaction FCOS Model for Lesion Detection in CT Images.” The main work of this paper is to design a lesion detector to detect the lesions in medical CT images. Next, I will introduce it from the following five aspects&#x2F;ˈæspekts&#x2F;.</p>
-<p>The first part is the research background and motivation. Cancer is a major global public health problem, and the graph visualizes new cancer incidence and mortality by 2024(twenty twenty four), showing that nearly half of the world’s new cancer cases and deaths occur in Asia. In Africa and some Asian regions, although the incidence of cancer is not very high, cancer mortality is high, in part because many patients are diagnosed<br>&#x2F;ˌdaɪəɡˈnoʊst&#x2F; with cancer at an advanced stage, resulting in a higher mortality rate. If you can in the occurrence of lesions, timely treatment will improve the survival&#x2F;sərˈvaɪv(ə)l&#x2F; rate.</p>
-<p>When a patient is unwell, doctors usually use medical images to diagnose,  for example, lesions in CT images may deteriorate&#x2F;dɪˈtɪriəreɪt&#x2F; into cancer. However, in the early stage of cancer, the characteristics&#x2F;ˌkærɪktəˈrɪstɪks&#x2F; of the lesions are not obvious, and doctors often rely on their past experience when screening. At the same time, when screening a large number of CT images, it will consume time and energy, which will lead to misdiagnosis and missed detection. The use of computer-aided detection can help doctors automatically identify the location of suspicious&#x2F;səˈspɪʃəs&#x2F; lesions and reduce their workload. CADe is the use of object detection technology to detect the lesion area. Object detection is mainly studied on natural images and is generally divided into three categories: two-stage, one-stage, and transformer structure. However, the direct application of these algorithms to the field of medical imaging does not guarantee&#x2F;ˌɡærənˈtiː&#x2F; satisfactory performance, because the differences between medical images and natural images can lead to the final lesion detection results being less accurate.</p>
-<p>We have compiled papers related to computer-aided detection and summarized that the current lesion detection task faces several main challenges: firstly, lesion detection not only relies on features specific to the lesion region, but also requires the assistance of surrounding tissue information. For example, in the pancreatic tumor data set, mucous cystic tumors are generally located in the pancreatic body and tail, and the introduction of this location information can better assist the identification of lesions. Second, the traditional object detector has two shortcomings in multi-scale feature fusion. One is that direct fuse of different layers of features reduces the representation of multi-scale features, and the other is that top-down transfer of features leads to loss of information. When features are fused, if the feature information of hard-to-detect lesions is lost, the overall accuracy&#x2F;ˈækjərəsi&#x2F; of the model will be reduced. These problems can cause small lesions and borderless lesions to be difficult to identify normally.</p>
+<p>Good evening, dear experts/ˈekspɜːrts/ and scholars. My name is Pan Mengjie from Zhejiang University of Technology. It’s my great honor to share with my paper, which was accepted/əkˈseptɪd/ at IJCNN. The title is “IAFI-FCOS: Intra- and Across-layer Feature Interaction FCOS Model for Lesion Detection in CT Images.” The main work of this paper is to design a lesion detector to detect the lesions in medical CT images. Next, I will introduce it from the following five aspects/ˈæspekts/.</p>
+<p>The first part is the research background and motivation. Cancer is a major global public health problem, and the graph visualizes new cancer incidence and mortality by 2024(twenty twenty four), showing that nearly half of the world’s new cancer cases and deaths occur in Asia. In Africa and some Asian regions, although the incidence of cancer is not very high, cancer mortality is high, in part because many patients are diagnosed<br>
+/ˌdaɪəɡˈnoʊst/ with cancer at an advanced stage, resulting in a higher mortality rate. If you can in the occurrence of lesions, timely treatment will improve the survival/sərˈvaɪv(ə)l/ rate.</p>
+<p>When a patient is unwell, doctors usually use medical images to diagnose,  for example, lesions in CT images may deteriorate/dɪˈtɪriəreɪt/ into cancer. However, in the early stage of cancer, the characteristics/ˌkærɪktəˈrɪstɪks/ of the lesions are not obvious, and doctors often rely on their past experience when screening. At the same time, when screening a large number of CT images, it will consume time and energy, which will lead to misdiagnosis and missed detection. The use of computer-aided detection can help doctors automatically identify the location of suspicious/səˈspɪʃəs/ lesions and reduce their workload. CADe is the use of object detection technology to detect the lesion area. Object detection is mainly studied on natural images and is generally divided into three categories: two-stage, one-stage, and transformer structure. However, the direct application of these algorithms to the field of medical imaging does not guarantee/ˌɡærənˈtiː/ satisfactory performance, because the differences between medical images and natural images can lead to the final lesion detection results being less accurate.</p>
+<p>We have compiled papers related to computer-aided detection and summarized that the current lesion detection task faces several main challenges: firstly, lesion detection not only relies on features specific to the lesion region, but also requires the assistance of surrounding tissue information. For example, in the pancreatic tumor data set, mucous cystic tumors are generally located in the pancreatic body and tail, and the introduction of this location information can better assist the identification of lesions. Second, the traditional object detector has two shortcomings in multi-scale feature fusion. One is that direct fuse of different layers of features reduces the representation of multi-scale features, and the other is that top-down transfer of features leads to loss of information. When features are fused, if the feature information of hard-to-detect lesions is lost, the overall accuracy/ˈækjərəsi/ of the model will be reduced. These problems can cause small lesions and borderless lesions to be difficult to identify normally.</p>
 <p>To address the above problems, we propose a lesion detection based on a one stage detector. The main contribution of this paper is that we propose intra-layer context augmentation block and cross-layer feature weighting block to solve these two problems respectively. The proposed IAFI-FCOS model obtained good results on both pancreas dataset and deeplesion dataset.</p>
-<p>The second part is the methodology&#x2F;ˌmeθəˈdɑːlədʒi&#x2F;. First, as shown in the figure, is a traditional detection framework, which is mainly composed of backbone, neck and head. The backbone is used to extract multi-scale features, the neck fuses multi-scale feature information, and head outputs overall prediction results, such as detection boxes and categories. The Neck part plays an important role in the detection model. The traditional neck generally uses the structure of FPN, which sums up different layers of features from top to bottom. This structure does not consider the two challenges mentioned above. Therefore, we proposed intra-layer context augmentation block to alleviate&#x2F;əˈliːvieɪt&#x2F; Challenge 1, and cross-layer feature weighting block to reduce the loss of detail information.</p>
-<p>This figure shows our overall network structure, compared with the traditional detection framework, we mainly adjusted and optimized for the neck part. The traditional FPN structure is replaced by using our proposed ICAF-FPN. The ICAF-FPN is mainly divided into three parts: ICA Block, AFW Block, and AFF. Step one: After the backbone network outputs the multi–scale features, the feature maps of each layer are processed by the ICA Block to obtain the intra-layer feature, respectively. The ICA block mainly consists of the Multi-head dilated&#x2F;daɪˈleɪtɪd&#x2F; Attention and MLP. Step 2: The multi-layer feature maps are input into AFW Block together and layer 2 is introduced because layer 2 retains more small target feature information. the AFW Block consists of the across-layer feature gather (AFG) block and the split feature weighting (Split FW ) block, which outputs the inter-layer fusion feature; Step 3: we use the residual&#x2F;rɪˈzɪdʒuəl&#x2F; structure to supplement&#x2F;ˈsʌplɪmənt&#x2F; the feature information to get Li. Finally: the adaptive feature fusion mechanism is used to fuse these three different semantic features. Above is the specific flow of our method.</p>
-<p>I will expand on the details of the ICA Block and AFW Block. The ICA Block sets different dilation rates for different heads of multi-head  attention, which captures the context information of different receptive fields and establishes&#x2F;ɪˈstæblɪʃɪz&#x2F; the dependency between pixels. Then AFW Block aligns the multilayer features using the AFG Block and extracts global features using dual-axis attention. The global features are weighted to different layers using Split FW Block and finally aligned features are fused. The details of the method can be followed up by reading our paper.</p>
-<p>Then, the third section briefly&#x2F;ˈbriːfli&#x2F; describes the experiments and configurations. We performed experimental analysis on two datasets, a private pancreas dataset and a public deeplesion dataset. All data are pre-processed according to expert recommendations. The evaluation matrices<br>&#x2F;ˈmeɪtrɪsiːz&#x2F; of the experiments mainly use the Average Precision (AP) metric and the Free-Response Receiver Operating Characteristic (FROC), and the specific application details are described in the paper and PPT accordingly.</p>
+<p>The second part is the methodology/ˌmeθəˈdɑːlədʒi/. First, as shown in the figure, is a traditional detection framework, which is mainly composed of backbone, neck and head. The backbone is used to extract multi-scale features, the neck fuses multi-scale feature information, and head outputs overall prediction results, such as detection boxes and categories. The Neck part plays an important role in the detection model. The traditional neck generally uses the structure of FPN, which sums up different layers of features from top to bottom. This structure does not consider the two challenges mentioned above. Therefore, we proposed intra-layer context augmentation block to alleviate/əˈliːvieɪt/ Challenge 1, and cross-layer feature weighting block to reduce the loss of detail information.</p>
+<p>This figure shows our overall network structure, compared with the traditional detection framework, we mainly adjusted and optimized for the neck part. The traditional FPN structure is replaced by using our proposed ICAF-FPN. The ICAF-FPN is mainly divided into three parts: ICA Block, AFW Block, and AFF. Step one: After the backbone network outputs the multi–scale features, the feature maps of each layer are processed by the ICA Block to obtain the intra-layer feature, respectively. The ICA block mainly consists of the Multi-head dilated/daɪˈleɪtɪd/ Attention and MLP. Step 2: The multi-layer feature maps are input into AFW Block together and layer 2 is introduced because layer 2 retains more small target feature information. the AFW Block consists of the across-layer feature gather (AFG) block and the split feature weighting (Split FW ) block, which outputs the inter-layer fusion feature; Step 3: we use the residual/rɪˈzɪdʒuəl/ structure to supplement/ˈsʌplɪmənt/ the feature information to get Li. Finally: the adaptive feature fusion mechanism is used to fuse these three different semantic features. Above is the specific flow of our method.</p>
+<p>I will expand on the details of the ICA Block and AFW Block. The ICA Block sets different dilation rates for different heads of multi-head  attention, which captures the context information of different receptive fields and establishes/ɪˈstæblɪʃɪz/ the dependency between pixels. Then AFW Block aligns the multilayer features using the AFG Block and extracts global features using dual-axis attention. The global features are weighted to different layers using Split FW Block and finally aligned features are fused. The details of the method can be followed up by reading our paper.</p>
+<p>Then, the third section briefly/ˈbriːfli/ describes the experiments and configurations. We performed experimental analysis on two datasets, a private pancreas dataset and a public deeplesion dataset. All data are pre-processed according to expert recommendations. The evaluation matrices<br>
+/ˈmeɪtrɪsiːz/ of the experiments mainly use the Average Precision (AP) metric and the Free-Response Receiver Operating Characteristic (FROC), and the specific application details are described in the paper and PPT accordingly.</p>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2024/06/29/My-paper-pre/#more" rel="contents">
@@ -479,11 +489,13 @@
 
       
           <p>这些方法的设计意图是为了实现线程间的协作与同步，而这种协作是基于对象的监视器来进行的。在Java中，每个对象都关联着一个监视器，这个监视器是用来控制多个线程对共享资源的访问，确保线程间的互斥与协作。</p>
-<h1 id="为什么不放在Thread中"><a href="#为什么不放在Thread中" class="headerlink" title="为什么不放在Thread中?"></a>为什么不放在Thread中?</h1><ol>
+<h1>为什么不放在Thread中?</h1>
+<ol>
 <li>锁的关联性：wait()是让获得对象锁的线程等待，会自动释放当前线程占用的对象锁并让其进入等待阻塞状态，要操作对应的对象，而不是线程。而sleep是让线程暂停执行，针对的是线程，不需要获得线程锁，所以sleep在Thread中。</li>
 <li>对象作为同步单位：在Java中，同步通常是基于对象的，而不是基于线程。多个线程为了访问共享资源要争夺同一个对象的锁。将这些方法放在object类中，使得这些方法自然地与用于同步的对象关联在一起，更加符合面向对象的编程思想。</li>
 </ol>
-<h1 id="为什么放在Object类中？"><a href="#为什么放在Object类中？" class="headerlink" title="为什么放在Object类中？"></a>为什么放在Object类中？</h1><ol>
+<h1>为什么放在Object类中？</h1>
+<ol>
 <li>通用性和灵活性：Java中的每个类都直接或间接继承object类，将这些方法放在object类中，意味着所有对象都可以调用它们，使得多线程通信的基本机制可以广泛用于各种类型的对象，提高了代码的通用性和灵活性。</li>
 <li>与同步机制紧密结合：wait()，notify()，和notifyAll()是Java内置的线程同步机制的一部分，它们与synchronized关键字紧密关联。当一个线程进入一个对象的同步代码块或方法时，它会自动获取该对象的锁。这三个方法正是在拥有对象锁的前提下才能被调用，确保了线程间通信的安全性。因此，将它们放在Object类中，与锁的管理逻辑保持一致，逻辑上更为合理。</li>
 <li>资源控制与协作：这些方法的主要目的是为了实现线程间的协作与资源控制。在多线程环境中，往往需要围绕共享资源进行操作，而这些资源通常就是对象。将这些方法放在 Object 类中，使得资源对象可以直接控制访问它的线程的行为，比如让线程等待某个条件满足（wait()）、通知等待的线程条件已改变（notify() 或 notifyAll()）。这与面向对象的思想相符，即行为（方法）与数据（对象状态）紧密绑定。</li>
@@ -591,7 +603,8 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="有效的数独"><a href="#有效的数独" class="headerlink" title="有效的数独"></a>有效的数独</h1><p><a href>题目链接</a></p>
+          <h1>有效的数独</h1>
+<p><a href>题目链接</a></p>
 <p>题目要求：判断一个9×9的数独是否有效</p>
 <p><strong>思路：</strong></p>
 <p>有效数独：</p>
@@ -608,7 +621,8 @@
 <li>最后出现计数大于1的情况，证明不是有效的数独，返回false</li>
 <li>不出现计数大于1的情况，则符合有效数独的条件，返回true</li>
 </ol>
-<h1 id="螺旋矩阵"><a href="#螺旋矩阵" class="headerlink" title="螺旋矩阵"></a>螺旋矩阵</h1><p>题目要求：给你一个 m 行 n 列的矩阵 matrix ，请按照 顺时针螺旋顺序 ，返回矩阵中的所有元素。</p>
+<h1>螺旋矩阵</h1>
+<p>题目要求：给你一个 m 行 n 列的矩阵 matrix ，请按照 顺时针螺旋顺序 ，返回矩阵中的所有元素。</p>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2024/06/12/code-%E7%9F%A9%E9%98%B5/#more" rel="contents">
@@ -717,7 +731,8 @@
 <p>胰腺导管腺癌（PDAC）是最致命的实体恶性肿瘤，通常在晚期和不可手术的阶段被发现。早期或偶然发现与延长生存期相关，但由于假阳性的低流行率和潜在危害，使用单一检测方法筛查无症状个体的PDAC仍然不可行。</p>
 <p>非对比计算机断层扫描（CT），常规用于临床适应症，具有大规模筛查的潜力，然而，使用非对比CT识别PDAC一直被认为是不可能的。在这里，我们开发了一种深度学习方法，即人工智能胰腺癌检测（PANDA），可以通过<strong>非对比CT检测和分类胰腺病变</strong>。</p>
 <p>PANDA在来自单一中心的3208名患者数据集上进行训练。PANDA在涉及10个中心的6,239名患者的多中心验证中，实现了0.986至0.996的接收者操作特征曲线下面积（AUC）用于病变检测，其性能在PDAC（胰腺导管腺癌）识别的敏感性上比放射科医师的平均表现高出34.1%，在特异性上高出6.3%，并且在包含20,530名连续患者的现实世界多场景验证中，病变检测的敏感性达到92.9%，特异性达到99.9%。值得注意的是，PANDA在使用非增强CT扫描时显示出与使用增强CT扫描的放射学报告在区分常见胰腺病变亚型方面的非劣性。PANDA有可能成为大规模胰腺癌筛查的新工具。</p>
-<h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p>非对比度计算机断层扫描（CT）在资源有限地区的体检中心和医院中广泛使用。与对比增强CT（诊断胰腺导管腺癌（PDAC）的主要成像方式）相比，非对比度CT使患者承受较低的辐射剂量，并消除了对造影剂不良反应的风险。</p>
+<h1>Introduction</h1>
+<p>非对比度计算机断层扫描（CT）在资源有限地区的体检中心和医院中广泛使用。与对比增强CT（诊断胰腺导管腺癌（PDAC）的主要成像方式）相比，非对比度CT使患者承受较低的辐射剂量，并消除了对造影剂不良反应的风险。</p>
 <p>除了在急诊科和社区医院常规使用的腹部非对比度CT外，胸部非对比度CT也可以完全或部分扫描胰腺区域，并且在多种临床场景中是最常进行的CT检查（即占所有进行的CT检查的近40%），如肺癌筛查。</p>
 <p>尽管即使对于经验丰富的放射科医师来说，从非对比度CT中识别PDAC也具有挑战性，但最近的研究表明，人工智能（AI）在各种医学图像分析任务上可以匹敌甚至超越人类专家；此外，AI能够从常规图像中合成对比增强的医学图像。基于AI的机会性筛查通过非对比度CT有潜力在几个临床领域中推进大量无症状患者的PDAC早期检测，只需承担最小的额外成本和辐射暴露。</p>
           <!--noindex-->
@@ -822,19 +837,19 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h1><p>安装好elasticsearch、elasticsearch-head、kibana（elasticsearch和kibana版本要一致，均为8.13.4）</p>
+          <h1>环境</h1>
+<p>安装好elasticsearch、elasticsearch-head、kibana（elasticsearch和kibana版本要一致，均为8.13.4）</p>
 <p>elasticsearch配置文件：<code>elasticsearch.yml</code></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">http.cors.enabled: true </span><br><span class="line">http.cors.allow-origin: &quot;*&quot;</span><br></pre></td></tr></table></figure>
-
-<h2 id="启动elasticsearch报错"><a href="#启动elasticsearch报错" class="headerlink" title="启动elasticsearch报错"></a>启动elasticsearch报错</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">received plaintext traffic on an encrypted channel, closing connection Netty4TcpChannel</span><br></pre></td></tr></table></figure>
+<h2 id="启动elasticsearch报错">启动elasticsearch报错</h2>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">received plaintext traffic on an encrypted channel, closing connection Netty4TcpChannel</span><br></pre></td></tr></table></figure>
 <p>错误原因：es默认开启SSL认证（SSL需要使用https，但在本机上使用直接是http）</p>
 <p><strong>解决办法：</strong></p>
 <ol>
 <li>使用https发送请求，用https替换http（我试过了，但没解决）</li>
-<li>修改配置文件：<code>elasticsearch.yml</code>(成功解决)<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xpack.security.enabled: false</span><br></pre></td></tr></table></figure>
-【注意】生产环境中还是要配置SSL的！</li>
+<li>修改配置文件：<code>elasticsearch.yml</code>(成功解决)</li>
 </ol>
-<p>但使用2之后，kibana就连不上es。？？？不知道为什么</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xpack.security.enabled: false</span><br></pre></td></tr></table></figure>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2024/05/31/java%E9%A1%B9%E7%9B%AE-elasticsearch/#more" rel="contents">
@@ -949,11 +964,14 @@
 <li>结构型：适配器模式、装饰器模式、代理模式、外观模式等</li>
 <li>行为型：策略模式、模板方法模式、观察者模式等</li>
 </ul>
-<h1 id="1、策略模式"><a href="#1、策略模式" class="headerlink" title="1、策略模式"></a>1、策略模式</h1><h2 id="场景"><a href="#场景" class="headerlink" title="场景"></a>场景</h2><p>策略模式可以避免使用多重条件语句，if…else语句。在项目中做登录校验时，针对不同身份（前台用户、作家后台管理、系统管理以及后面扩展子系统）会有不同的验证策略，如果不使用策略模式，就得在拦截器中针对请求的URI中识别出相应的访问类型，针对不同访问类型蓝进行鉴权，则需要在这个拦截器中写一长串的if判断语句；同时，后续添加其他权限，需要对这个代码进行修改。这种方式会使代码臃肿且难以维护。</p>
+<h1>1、策略模式</h1>
+<h2 id="场景">场景</h2>
+<p>策略模式可以避免使用多重条件语句，if…else语句。在项目中做登录校验时，针对不同身份（前台用户、作家后台管理、系统管理以及后面扩展子系统）会有不同的验证策略，如果不使用策略模式，就得在拦截器中针对请求的URI中识别出相应的访问类型，针对不同访问类型蓝进行鉴权，则需要在这个拦截器中写一长串的if判断语句；同时，后续添加其他权限，需要对这个代码进行修改。这种方式会使代码臃肿且难以维护。</p>
 <p>【使用策略模式可以解决这个问题】</p>
-<h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><p>该模式定义了一系列算法，并将每个算法封装起来，使他们可以相互替换。</p>
+<h2 id="定义">定义</h2>
+<p>该模式定义了一系列算法，并将每个算法封装起来，使他们可以相互替换。</p>
 <p>属于<strong>对象行为模式</strong>，通过对算法进行封装，把使用算法的责任和算法的实现分开，并委派给不同的对象对这些算法进行管理。</p>
-<h1 id="2、建造者模式"><a href="#2、建造者模式" class="headerlink" title="2、建造者模式"></a>2、建造者模式</h1>
+<h1>2、建造者模式</h1>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2024/05/29/java-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/#more" rel="contents">
@@ -1062,18 +1080,24 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="CAP"><a href="#CAP" class="headerlink" title="CAP"></a>CAP</h1><ul>
+          <h1>CAP</h1>
+<ul>
 <li>C：一致性Consistence，所有节点访问同一份最新的数据副本</li>
 <li>A：可用性Availability，非故障的节点在合理的时间内返回合理的响应（不是错误或超时）</li>
 <li>P：分区容错性Partition tolerance，分布式系统出现网络分区的时候，仍能够对外提供服务</li>
 </ul>
-<h2 id="什么是网络分区？"><a href="#什么是网络分区？" class="headerlink" title="什么是网络分区？"></a>什么是网络分区？</h2><p>分布式系统中，本来多个节点之间是连通的，但因为某些故障出现问题，导致节点之间不连通，整个网络分成几块。<br>当网络出现分区时，我们要继续服务，强一致性和可用性就只能2选1。P时必须要实现的，决定了P再选择是A还是C。</p>
+<h2 id="什么是网络分区？">什么是网络分区？</h2>
+<p>分布式系统中，本来多个节点之间是连通的，但因为某些故障出现问题，导致节点之间不连通，整个网络分成几块。<br>
+当网络出现分区时，我们要继续服务，强一致性和可用性就只能2选1。P时必须要实现的，决定了P再选择是A还是C。</p>
 <p>【分布式系统理论上不可能选择CA，只能选择CP和AP。选择的关键在于业务场景，银行一般保证CP】</p>
-<h2 id="为什么不能保证CA？"><a href="#为什么不能保证CA？" class="headerlink" title="为什么不能保证CA？"></a>为什么不能保证CA？</h2><ul>
+<h2 id="为什么不能保证CA？">为什么不能保证CA？</h2>
+<ul>
 <li>因为当出现分区，某个节点需要进行读写操作，为了保证C，就必须保证其他节点不能进行读写，就和A发生冲突了。如果保证A，其他节点正常读写就不能保证C。</li>
 </ul>
-<h1 id="BASE"><a href="#BASE" class="headerlink" title="BASE"></a>BASE</h1><ul>
-<li>BA：基本可用Basically Available，指分布式系统出现不可预知故障的时候，允许损失部分可用性。<ul>
+<h1>BASE</h1>
+<ul>
+<li>BA：基本可用Basically Available，指分布式系统出现不可预知故障的时候，允许损失部分可用性。
+<ul>
 <li>响应时间上的损失，处理用户的请求时间从0.5s变为3s</li>
 <li>系统功能上的损失，由于系统访问量突然剧增，系统的部分非核心功能无法使用</li>
 </ul>
@@ -1192,8 +1216,10 @@
       
           <p>论文题目：Poly Kernel Inception Network for Remote Sensing Detection</p>
 <p>来源：2024 CVPR</p>
-<p><strong>摘要</strong>：<br>遥感图像（RSIs）中的目标检测经常面临几个问题，包括目标尺度的巨大变化和不同范围的上下文（diverse-ranging context）。先前的方法通过大核卷积或空洞卷积来扩展主干网络的空间感受野来解决这些挑战。然而，大核卷积会引入相当大的背景噪声，空洞卷积有可能产生过于稀疏的特征表示。在这篇文章中，作者引入了聚核初始网络（Poly Kernel Inception Network， PKINet）来解决上述挑战。PKINet利用无空洞的多尺度卷积核来提取不同尺度的目标特征并捕获局部上下文。此外，我们还引入了一个并行的CCA（Context Anchor Attention）模块来捕获长距离上下文信息。这两个组件共同作用，提高了PKINet在四个具有挑战性的遥感探测基准上的性能，即DATA-v1.0，DATA-v1.5，HRSC2016，核DIOR-R。</p>
-<h1 id="Introdution"><a href="#Introdution" class="headerlink" title="Introdution"></a>Introdution</h1><p>与通常的水平边界盒的目标检测相比，遥感目标检测的目标是生成与目标方向准确对齐的边界盒。大量的研究致力于开发各种定向边界盒（oriented bounding box OBB）检测器，提高OBB的角度预测精度。然而，在改进目标检测的特征提取方面，RSIs的独特特征没有充分得到探索。</p>
+<p><strong>摘要</strong>：<br>
+遥感图像（RSIs）中的目标检测经常面临几个问题，包括目标尺度的巨大变化和不同范围的上下文（diverse-ranging context）。先前的方法通过大核卷积或空洞卷积来扩展主干网络的空间感受野来解决这些挑战。然而，大核卷积会引入相当大的背景噪声，空洞卷积有可能产生过于稀疏的特征表示。在这篇文章中，作者引入了聚核初始网络（Poly Kernel Inception Network， PKINet）来解决上述挑战。PKINet利用无空洞的多尺度卷积核来提取不同尺度的目标特征并捕获局部上下文。此外，我们还引入了一个并行的CCA（Context Anchor Attention）模块来捕获长距离上下文信息。这两个组件共同作用，提高了PKINet在四个具有挑战性的遥感探测基准上的性能，即DATA-v1.0，DATA-v1.5，HRSC2016，核DIOR-R。</p>
+<h1>Introdution</h1>
+<p>与通常的水平边界盒的目标检测相比，遥感目标检测的目标是生成与目标方向准确对齐的边界盒。大量的研究致力于开发各种定向边界盒（oriented bounding box OBB）检测器，提高OBB的角度预测精度。然而，在改进目标检测的特征提取方面，RSIs的独特特征没有充分得到探索。</p>
 <p>遥感图像包括空中和卫星图像，从鸟瞰视角获得，提供了地球表面的高分辨率视图。RSIs中描述的物体表现出广泛的尺度，从足球场等广阔的物体到相对较小的实体，如车。对这些物体的准备识别不仅依赖于外观，还依赖于背景信息，即所处的周围环境。为了解决对象尺度上的巨大变化，一些方法用显式数据增强技术来提高特征对尺度变化的鲁棒性。有些人采用多尺度特征集成或金字塔特征层来提取丰富的尺度信息。</p>
 <p>但这些方法存在一个局限性：不同尺度的物体的感受野保持相同，不能为较大的物体提供足够的上下文信息。</p>
 <p>LSKNet提出了有选择的扩大较大物体的感受野能捕获更多的场景上下文信息。它将大核卷积和空洞卷积合并到主干网络中来实现。然而，引入大核卷积会引入大量的背景噪声，可能不利于对小物体的准确检测。另一方面，空洞卷积虽然能有效扩大感受野，但可能会会忽略区域内的细粒度细节，导致过于稀疏的特征表示。</p>
@@ -1308,12 +1334,14 @@
 
       
           <p>论文题目：Attention-based Class-Conditioned Alignment for Multi-Source Domain Adaptive Object Detection</p>
-<p>来源：2024&#x2F;03&#x2F;14 arxiv</p>
-<p><strong>摘要</strong>：<br>目标检测（OD）的领域自适应方法通过促进源域和目标域的特征对齐来减轻分布转移的影响。多源域自适应（MSDA）利用多个带注释的源数据和未标记的目标数据来提高检测模型的准确性和鲁棒性。大多数SOTA OD MSDA方法都以<strong>类不可知方式</strong>（class-agnostic）特征对齐。这是具有挑战性的，由于跨域的对象外观的变化，对象具有独特的模态信息。最近一种基于原型的方法提出了<strong>类对齐</strong>（class-wise alignment），但由于噪声伪标签的存在，会对不平衡数据的适应产生负面影响。为了克服这些限制，我们提出了一种基于注意力的MSDA<strong>类条件对齐方式</strong>（class-conditioned alignment），该方案可以跨域对齐每个对象类别的实例。特别地，一个注意力模块与对抗域分类器（adversarial domain classifier）相结合，来学习领域不变和特定类的实例表示。在多个基准测试MSDA数据集上的实验结果表明，我们的方法优于最先进的方法，并且对类不平衡具有较好的鲁棒性。</p>
+<p>来源：2024/03/14 arxiv</p>
+<p><strong>摘要</strong>：<br>
+目标检测（OD）的领域自适应方法通过促进源域和目标域的特征对齐来减轻分布转移的影响。多源域自适应（MSDA）利用多个带注释的源数据和未标记的目标数据来提高检测模型的准确性和鲁棒性。大多数SOTA OD MSDA方法都以<strong>类不可知方式</strong>（class-agnostic）特征对齐。这是具有挑战性的，由于跨域的对象外观的变化，对象具有独特的模态信息。最近一种基于原型的方法提出了<strong>类对齐</strong>（class-wise alignment），但由于噪声伪标签的存在，会对不平衡数据的适应产生负面影响。为了克服这些限制，我们提出了一种基于注意力的MSDA<strong>类条件对齐方式</strong>（class-conditioned alignment），该方案可以跨域对齐每个对象类别的实例。特别地，一个注意力模块与对抗域分类器（adversarial domain classifier）相结合，来学习领域不变和特定类的实例表示。在多个基准测试MSDA数据集上的实验结果表明，我们的方法优于最先进的方法，并且对类不平衡具有较好的鲁棒性。</p>
 <p>类不可知（class-agnostic）：</p>
 <p>基于原型的类对齐（class-wise alignment）:</p>
 <p>类条件对齐方式（class-conditioned alignment）：</p>
-<h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p>目标检测在许多基准问题上显示了优秀的结果，但在训练（源）和测试（目标）数据分布之间存在域偏移时，它们的性能会下降。为了解决这个问题，几种无监督域自适应（UDA）的方法被提出来提高存在域偏移情况下的目标检测性能。</p>
+<h1>Introduction</h1>
+<p>目标检测在许多基准问题上显示了优秀的结果，但在训练（源）和测试（目标）数据分布之间存在域偏移时，它们的性能会下降。为了解决这个问题，几种无监督域自适应（UDA）的方法被提出来提高存在域偏移情况下的目标检测性能。</p>
 <p>传统的UDA方法假设源数据只来自单个分布，但在现实场景中，源数据通常来自多个分布，由于天气、地理位置和照明而发生了相当大的域变化。这在OD中叫多源域自适应。</p>
 <p>MSDA具有挑战，因为要处理源之间的差异以及源和目标之间的差异。但是拥有来自多个分布的源数据可以增强自适应，增强泛化，并提高对域偏移的鲁棒性。</p>
           <!--noindex-->
@@ -1458,7 +1486,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">30k</span>
+    <span title="站点总字数">29k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>

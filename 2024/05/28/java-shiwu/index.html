@@ -20,12 +20,12 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="CAP C：一致性Consistence，所有节点访问同一份最新的数据副本 A：可用性Availability，非故障的节点在合理的时间内返回合理的响应（不是错误或超时） P：分区容错性Partition tolerance，分布式系统出现网络分区的时候，仍能够对外提供服务  什么是网络分区？分布式系统中，本来多个节点之间是连通的，但因为某些故障出现问题，导致节点之间不连通，整个网络分成几块。当网">
+  <meta name="description" content="CAP  C：一致性Consistence，所有节点访问同一份最新的数据副本 A：可用性Availability，非故障的节点在合理的时间内返回合理的响应（不是错误或超时） P：分区容错性Partition tolerance，分布式系统出现网络分区的时候，仍能够对外提供服务  什么是网络分区？ 分布式系统中，本来多个节点之间是连通的，但因为某些故障出现问题，导致节点之间不连通，整个网络分成几块。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="分布式事务">
 <meta property="og:url" content="http://example.com/2024/05/28/java-shiwu/index.html">
 <meta property="og:site_name" content="向李的博客">
-<meta property="og:description" content="CAP C：一致性Consistence，所有节点访问同一份最新的数据副本 A：可用性Availability，非故障的节点在合理的时间内返回合理的响应（不是错误或超时） P：分区容错性Partition tolerance，分布式系统出现网络分区的时候，仍能够对外提供服务  什么是网络分区？分布式系统中，本来多个节点之间是连通的，但因为某些故障出现问题，导致节点之间不连通，整个网络分成几块。当网">
+<meta property="og:description" content="CAP  C：一致性Consistence，所有节点访问同一份最新的数据副本 A：可用性Availability，非故障的节点在合理的时间内返回合理的响应（不是错误或超时） P：分区容错性Partition tolerance，分布式系统出现网络分区的时候，仍能够对外提供服务  什么是网络分区？ 分布式系统中，本来多个节点之间是连通的，但因为某些故障出现问题，导致节点之间不连通，整个网络分成几块。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2024-05-28T13:51:18.000Z">
 <meta property="article:modified_time" content="2024-05-29T01:16:50.592Z">
@@ -255,18 +255,24 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="CAP"><a href="#CAP" class="headerlink" title="CAP"></a>CAP</h1><ul>
+        <h1>CAP</h1>
+<ul>
 <li>C：一致性Consistence，所有节点访问同一份最新的数据副本</li>
 <li>A：可用性Availability，非故障的节点在合理的时间内返回合理的响应（不是错误或超时）</li>
 <li>P：分区容错性Partition tolerance，分布式系统出现网络分区的时候，仍能够对外提供服务</li>
 </ul>
-<h2 id="什么是网络分区？"><a href="#什么是网络分区？" class="headerlink" title="什么是网络分区？"></a>什么是网络分区？</h2><p>分布式系统中，本来多个节点之间是连通的，但因为某些故障出现问题，导致节点之间不连通，整个网络分成几块。<br>当网络出现分区时，我们要继续服务，强一致性和可用性就只能2选1。P时必须要实现的，决定了P再选择是A还是C。</p>
+<h2 id="什么是网络分区？">什么是网络分区？</h2>
+<p>分布式系统中，本来多个节点之间是连通的，但因为某些故障出现问题，导致节点之间不连通，整个网络分成几块。<br>
+当网络出现分区时，我们要继续服务，强一致性和可用性就只能2选1。P时必须要实现的，决定了P再选择是A还是C。</p>
 <p>【分布式系统理论上不可能选择CA，只能选择CP和AP。选择的关键在于业务场景，银行一般保证CP】</p>
-<h2 id="为什么不能保证CA？"><a href="#为什么不能保证CA？" class="headerlink" title="为什么不能保证CA？"></a>为什么不能保证CA？</h2><ul>
+<h2 id="为什么不能保证CA？">为什么不能保证CA？</h2>
+<ul>
 <li>因为当出现分区，某个节点需要进行读写操作，为了保证C，就必须保证其他节点不能进行读写，就和A发生冲突了。如果保证A，其他节点正常读写就不能保证C。</li>
 </ul>
-<h1 id="BASE"><a href="#BASE" class="headerlink" title="BASE"></a>BASE</h1><ul>
-<li>BA：基本可用Basically Available，指分布式系统出现不可预知故障的时候，允许损失部分可用性。<ul>
+<h1>BASE</h1>
+<ul>
+<li>BA：基本可用Basically Available，指分布式系统出现不可预知故障的时候，允许损失部分可用性。
+<ul>
 <li>响应时间上的损失，处理用户的请求时间从0.5s变为3s</li>
 <li>系统功能上的损失，由于系统访问量突然剧增，系统的部分非核心功能无法使用</li>
 </ul>
@@ -276,12 +282,15 @@
 </ul>
 <p>BASE对CAP中一致性C和可用性A权衡的结果，对AP方案的一个补充。</p>
 <p><strong>核心思想</strong>：即使不能做到强一致性，但每个应用可以根据自身业务特点，采用适当的方式来使系统达到最终一致性。（牺牲数据的强一致性来满足系统的高可用性）</p>
-<h1 id="柔性事务"><a href="#柔性事务" class="headerlink" title="柔性事务"></a>柔性事务</h1><p>柔性事务追求最终一致性。</p>
+<h1>柔性事务</h1>
+<p>柔性事务追求最终一致性。</p>
 <p>目标：根据自身业务特性，通过适当的方式来保证系统数据的最终一致性。</p>
 <p>例如：TCC、Sage、MQ事务、本地消息表</p>
-<h1 id="刚性事务"><a href="#刚性事务" class="headerlink" title="刚性事务"></a>刚性事务</h1><p>刚性事务追求强一致性。</p>
+<h1>刚性事务</h1>
+<p>刚性事务追求强一致性。</p>
 <p>例如：2PC、3PC</p>
-<h1 id="Seata"><a href="#Seata" class="headerlink" title="Seata"></a>Seata</h1><p>开源的分布式事务解决方案。有四种事务模式AT、TCC、SAGA和XA事务模式。</p>
+<h1>Seata</h1>
+<p>开源的分布式事务解决方案。有四种事务模式AT、TCC、SAGA和XA事务模式。</p>
 <p><strong>TC事务协调者</strong>：维护全局和分支事务的状态，驱动全局事务提交或回滚</p>
 <p><strong>TM事务管理器</strong>：定义全局事务的范围，开始全局事务、提交或回滚全局事务</p>
 <p><strong>RM资源管理器</strong>：管理分支事务处理的资源</p>
@@ -303,24 +312,28 @@
 <li>二阶段 commit 行为：调用 自定义 的 commit 逻辑。</li>
 <li>二阶段 rollback 行为：调用 自定义 的 rollback 逻辑。</li>
 </ul>
-<h2 id="二阶段提交协议"><a href="#二阶段提交协议" class="headerlink" title="二阶段提交协议"></a>二阶段提交协议</h2><ol>
-<li>准备阶段（一阶段）：询问事务参与者执行本地数据库事务操作是否成功<ol>
+<h2 id="二阶段提交协议">二阶段提交协议</h2>
+<ol>
+<li>准备阶段（一阶段）：询问事务参与者执行本地数据库事务操作是否成功
+<ol>
 <li>事务管理者TM像所有事务参与者RM发送消息询问，“是否可以执行事务操作？”，等待回复</li>
-<li>RM接受到消息后，开始执行本地数据库事务操作，写redo log&#x2F;undo log，但此时并不会提交事务</li>
+<li>RM接受到消息后，开始执行本地数据库事务操作，写redo log/undo log，但此时并不会提交事务</li>
 <li>执行本地事务操作后，回复yes表示我已就绪，回复no则表示未就绪</li>
 </ol>
 </li>
 <li>提交阶段（二阶段）：询问事务参与者提交本地事务是否成功</li>
 </ol>
 <ul>
-<li>当所有事务者参与者都是就绪状态的话：<ol>
+<li>当所有事务者参与者都是就绪状态的话：
+<ol>
 <li>TM向所有参与者发送消息：你们可以提交事务了</li>
 <li>RM接收到Commit消息后执行提交本地数据库事务，执行完成后释放整个事务期间所占用的资源</li>
 <li>RM回复“事务已经提交”</li>
 <li>TM收到所有事务参与者的ACK消息后，整个分布式事务过程正式结束</li>
 </ol>
 </li>
-<li>当任一事务参与者是未就绪状态的话：<ol>
+<li>当任一事务参与者是未就绪状态的话：
+<ol>
 <li>TM向所有参与者发送消息：你们可以执行回滚操作了</li>
 <li>RM接收到Rollback消息后，本地数据库事务回滚，执行完后释放整个事务期间所占用的资源</li>
 <li>RM回复“事务已经回滚”</li>
@@ -331,10 +344,12 @@
 <p><strong>存在问题：</strong></p>
 <ul>
 <li>同步阻塞：事务参与者会在正式提交事务之前会一直占用相关的资源。比如用户转账给小红，那其他事务也要操作用户小明或小红的话，就会阻塞。</li>
-<li>数据不一致：由于网络原因导致部分参与者收不到Commit&#x2F;Rollback消息的话，就会导致数据不一致</li>
+<li>数据不一致：由于网络原因导致部分参与者收不到Commit/Rollback消息的话，就会导致数据不一致</li>
 <li>单点问题：TM在准备阶段之后挂掉，事务参与者就会一直卡在提交阶段</li>
 </ul>
-<h2 id="AT模式（默认方式）"><a href="#AT模式（默认方式）" class="headerlink" title="AT模式（默认方式）"></a>AT模式（默认方式）</h2><p>非侵入式的分布式事务解决方案，<br>主要流程：</p>
+<h2 id="AT模式（默认方式）">AT模式（默认方式）</h2>
+<p>非侵入式的分布式事务解决方案，<br>
+主要流程：</p>
 <ol>
 <li>解析SQL，查询前镜像，即更新之前的数据内容</li>
 <li>执行SQL，再根据前镜像的结果，查询后镜像，即更新后的数据</li>
@@ -342,14 +357,16 @@
 <li>提交前，向TC（事务协调者）注册分支</li>
 <li>本地事务提交业务数据的更新以及undo_log一起</li>
 <li>将本地事务的结果上报给TC</li>
-<li>TC回滚<ul>
+<li>TC回滚
+<ul>
 <li>出现问题，则需要回滚</li>
 <li>开启一个本地事务，通过XID和Branch ID查找相应的undo_log记录</li>
 <li>数据校验后根据undo-log上的前镜像和业务SQL的相关信息生成并执行回滚的语句</li>
 <li>提交本地事务，将事务回滚的结果上报给TC</li>
 </ul>
 </li>
-<li>TC提交<ul>
+<li>TC提交
+<ul>
 <li>收到TC的分支提交请求，把请求放入一个异步任务的队列中，马上返回提交成功的结果给TC</li>
 <li>异步任务阶段的分支提交请求将异步和批量地删除相应undo-log记录</li>
 </ul>
@@ -357,50 +374,60 @@
 </ol>
 <p>总结：</p>
 <ul>
-<li>执行阶段：<ul>
+<li>执行阶段：
+<ul>
 <li>可回滚：根据 SQL 解析结果，记录回滚日志</li>
 <li>持久化：回滚日志和业务 SQL 在同一个本地事务中提交到数据库</li>
 </ul>
 </li>
-<li>完成阶段：<ul>
+<li>完成阶段：
+<ul>
 <li>分支提交：异步删除回滚日志记录</li>
 <li>分支回滚：依据回滚日志进行反向补偿更新</li>
 </ul>
 </li>
 </ul>
-<h2 id="TCC模式"><a href="#TCC模式" class="headerlink" title="TCC模式"></a>TCC模式</h2><p>侵入式代码的一种分布式解决方案。TCC追求的是最终一致性，不会一直持有各个业务资源的锁。</p>
+<h2 id="TCC模式">TCC模式</h2>
+<p>侵入式代码的一种分布式解决方案。TCC追求的是最终一致性，不会一直持有各个业务资源的锁。</p>
 <p>所谓的TCC模式，就是把自定义分支事务纳入到全局事务中来管理，如果当前系统不支持本地事务，可用采用TCC模式。</p>
 <ul>
-<li>执行阶段：<ul>
+<li>执行阶段：
+<ul>
 <li>调用业务定义的 Try 方法（完全由业务层面保证 可回滚 和 持久化）</li>
 </ul>
 </li>
-<li>完成阶段：<ul>
+<li>完成阶段：
+<ul>
 <li>分支提交：调用各事务分支定义的 Confirm 方法</li>
 <li>分支回滚：调用各事务分支定义的 Cancel 方法</li>
 </ul>
 </li>
 </ul>
-<h2 id="SAGA模式"><a href="#SAGA模式" class="headerlink" title="SAGA模式"></a>SAGA模式</h2><p>侵入业务代码的一种分布式解决方案，SAGA是一种长事务解决方案。和TCC不同的地方是没有try动作，本地事务之间被提交。<br>核心思想：将长事务拆分为多个短事务</p>
+<h2 id="SAGA模式">SAGA模式</h2>
+<p>侵入业务代码的一种分布式解决方案，SAGA是一种长事务解决方案。和TCC不同的地方是没有try动作，本地事务之间被提交。<br>
+核心思想：将长事务拆分为多个短事务</p>
 <ul>
-<li>长事务 –》 T1，T2，。。。，Tn</li>
+<li>长事务 --》 T1，T2，。。。，Tn</li>
 <li>每个短事务都有一个补偿动作 – 》C1，C2，~，Cn</li>
 </ul>
 <p>如果T1，T2~Tn这些短事务都能顺利完成的话，整个事务也就结束了，否则，将采取恢复模式：</p>
 <ul>
-<li>反向恢复：如果Ti短事务提交失败，则补偿所有已完成的事务（Ci对Ti进行补偿   T1,T2,…,Ti失败, Ci补偿, .. ,C2, C1）</li>
-<li>正向恢复：如果Ti短事务提交失败，则一直重试直到成功为止（T1,T2,…,Ti失败, Ti补偿, .. Ti+!, Tn）</li>
+<li>反向恢复：如果Ti短事务提交失败，则补偿所有已完成的事务（Ci对Ti进行补偿   T1,T2,…,Ti失败, Ci补偿, … ,C2, C1）</li>
+<li>正向恢复：如果Ti短事务提交失败，则一直重试直到成功为止（T1,T2,…,Ti失败, Ti补偿, … Ti+!, Tn）</li>
 </ul>
 <p>【但saga不能保证隔离性】</p>
 <p>在Seata中SAGA是基于状态机引擎实现的</p>
-<h2 id="XA模式"><a href="#XA模式" class="headerlink" title="XA模式"></a>XA模式</h2><p>非侵入式的分布式事务解决方案，强一致性，需要数据库本身支持XA协议。【性能低，较少使用】</p>
+<h2 id="XA模式">XA模式</h2>
+<p>非侵入式的分布式事务解决方案，强一致性，需要数据库本身支持XA协议。【性能低，较少使用】</p>
 <ul>
-<li>执行阶段：<ul>
+<li>执行阶段：
+<ul>
 <li>可回滚：业务 SQL 操作放在 XA 分支中进行，由资源对 XA 协议的支持来保证 可回滚</li>
 <li>持久化：XA 分支完成后，执行 XA prepare，同样，由资源对 XA 协议的支持来保证 持久化（即，之后任何意外都不会造成无法回滚的情况）</li>
 </ul>
 </li>
-<li>完成阶段：<ul>
+<li>完成阶段：
+<ul>
 <li>分支提交：执行 XA 分支的 commit</li>
 <li>分支回滚：执行 XA 分支的 rollback</li>
 </ul>
@@ -491,7 +518,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#CAP"><span class="nav-number">1.</span> <span class="nav-text">CAP</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E7%BD%91%E7%BB%9C%E5%88%86%E5%8C%BA%EF%BC%9F"><span class="nav-number">1.1.</span> <span class="nav-text">什么是网络分区？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%8D%E8%83%BD%E4%BF%9D%E8%AF%81CA%EF%BC%9F"><span class="nav-number">1.2.</span> <span class="nav-text">为什么不能保证CA？</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#BASE"><span class="nav-number">2.</span> <span class="nav-text">BASE</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9F%94%E6%80%A7%E4%BA%8B%E5%8A%A1"><span class="nav-number">3.</span> <span class="nav-text">柔性事务</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%88%9A%E6%80%A7%E4%BA%8B%E5%8A%A1"><span class="nav-number">4.</span> <span class="nav-text">刚性事务</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Seata"><span class="nav-number">5.</span> <span class="nav-text">Seata</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E9%98%B6%E6%AE%B5%E6%8F%90%E4%BA%A4%E5%8D%8F%E8%AE%AE"><span class="nav-number">5.1.</span> <span class="nav-text">二阶段提交协议</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AT%E6%A8%A1%E5%BC%8F%EF%BC%88%E9%BB%98%E8%AE%A4%E6%96%B9%E5%BC%8F%EF%BC%89"><span class="nav-number">5.2.</span> <span class="nav-text">AT模式（默认方式）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TCC%E6%A8%A1%E5%BC%8F"><span class="nav-number">5.3.</span> <span class="nav-text">TCC模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SAGA%E6%A8%A1%E5%BC%8F"><span class="nav-number">5.4.</span> <span class="nav-text">SAGA模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#XA%E6%A8%A1%E5%BC%8F"><span class="nav-number">5.5.</span> <span class="nav-text">XA模式</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">1.</span> <span class="nav-text">CAP</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E7%BD%91%E7%BB%9C%E5%88%86%E5%8C%BA%EF%BC%9F"><span class="nav-number">1.1.</span> <span class="nav-text">什么是网络分区？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%8D%E8%83%BD%E4%BF%9D%E8%AF%81CA%EF%BC%9F"><span class="nav-number">1.2.</span> <span class="nav-text">为什么不能保证CA？</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">2.</span> <span class="nav-text">BASE</span></a></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">3.</span> <span class="nav-text">柔性事务</span></a></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">4.</span> <span class="nav-text">刚性事务</span></a></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">5.</span> <span class="nav-text">Seata</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E9%98%B6%E6%AE%B5%E6%8F%90%E4%BA%A4%E5%8D%8F%E8%AE%AE"><span class="nav-number">5.1.</span> <span class="nav-text">二阶段提交协议</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AT%E6%A8%A1%E5%BC%8F%EF%BC%88%E9%BB%98%E8%AE%A4%E6%96%B9%E5%BC%8F%EF%BC%89"><span class="nav-number">5.2.</span> <span class="nav-text">AT模式（默认方式）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TCC%E6%A8%A1%E5%BC%8F"><span class="nav-number">5.3.</span> <span class="nav-text">TCC模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SAGA%E6%A8%A1%E5%BC%8F"><span class="nav-number">5.4.</span> <span class="nav-text">SAGA模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#XA%E6%A8%A1%E5%BC%8F"><span class="nav-number">5.5.</span> <span class="nav-text">XA模式</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -556,7 +583,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">30k</span>
+    <span title="站点总字数">29k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
