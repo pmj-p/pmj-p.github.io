@@ -161,6 +161,125 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/05/24/paper-meeting/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/head.jpg">
+      <meta itemprop="name" content="向李">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="向李的博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/05/24/paper-meeting/" class="post-title-link" itemprop="url">Attention-based Class-Conditioned Alignment for Multi-Source Domain Adaptive Object Detection</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-05-24 16:32:24" itemprop="dateCreated datePublished" datetime="2024-05-24T16:32:24+08:00">2024-05-24</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-06-28 20:16:51" itemprop="dateModified" datetime="2024-06-28T20:16:51+08:00">2024-06-28</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/parper/" itemprop="url" rel="index"><span itemprop="name">parper</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2024/05/24/paper-meeting/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2024/05/24/paper-meeting/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>3.3k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>3 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>论文题目：Attention-based Class-Conditioned Alignment for Multi-Source Domain Adaptive Object Detection</p>
+<p>来源：2024/03/14 arxiv</p>
+<p><strong>摘要</strong>：<br>
+目标检测（OD）的领域自适应方法通过促进源域和目标域的特征对齐来减轻分布转移的影响。多源域自适应（MSDA）利用多个带注释的源数据和未标记的目标数据来提高检测模型的准确性和鲁棒性。大多数SOTA OD MSDA方法都以<strong>类不可知方式</strong>（class-agnostic）特征对齐。这是具有挑战性的，由于跨域的对象外观的变化，对象具有独特的模态信息。最近一种基于原型的方法提出了<strong>类对齐</strong>（class-wise alignment），但由于噪声伪标签的存在，会对不平衡数据的适应产生负面影响。为了克服这些限制，我们提出了一种基于注意力的MSDA<strong>类条件对齐方式</strong>（class-conditioned alignment），该方案可以跨域对齐每个对象类别的实例。特别地，一个注意力模块与对抗域分类器（adversarial domain classifier）相结合，来学习领域不变和特定类的实例表示。在多个基准测试MSDA数据集上的实验结果表明，我们的方法优于最先进的方法，并且对类不平衡具有较好的鲁棒性。</p>
+<p>类不可知（class-agnostic）：</p>
+<p>基于原型的类对齐（class-wise alignment）:</p>
+<p>类条件对齐方式（class-conditioned alignment）：</p>
+<h1>Introduction</h1>
+<p>目标检测在许多基准问题上显示了优秀的结果，但在训练（源）和测试（目标）数据分布之间存在域偏移时，它们的性能会下降。为了解决这个问题，几种无监督域自适应（UDA）的方法被提出来提高存在域偏移情况下的目标检测性能。</p>
+<p>传统的UDA方法假设源数据只来自单个分布，但在现实场景中，源数据通常来自多个分布，由于天气、地理位置和照明而发生了相当大的域变化。这在OD中叫多源域自适应。</p>
+<p>MSDA具有挑战，因为要处理源之间的差异以及源和目标之间的差异。但是拥有来自多个分布的源数据可以增强自适应，增强泛化，并提高对域偏移的鲁棒性。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2024/05/24/paper-meeting/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/2024/05/24/java-weifuwu/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -564,7 +683,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">13</span>
+          <span class="site-state-item-count">14</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -577,7 +696,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-count">14</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -613,12 +732,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">29k</span>
+    <span title="站点总字数">30k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">27 分钟</span>
+    <span title="站点阅读时长">28 分钟</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
   </div>
