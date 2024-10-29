@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="简历-消息积压场景 处理Kafka消息积压问题：对于线上积压百万条消息的情况，采取紧急扩容措施，创建临时topic以快速处理消息。同时，分析导致消息积压的根本原因，并改进监控Kafka消息积压的代码 问题场景：巡检数据–kafka积压。同一个实例里面有两个生产任务的线程，一共积压了两天的任务，总量是100万，线上积压了200万。消费者消费重复消息不会有问题，es会去重。 存在问题：  消费者是io">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Kafka常见面试题（扩展-消息队列）">
+<meta property="og:url" content="http://example.com/2024/09/18/java-kafka/index.html">
+<meta property="og:site_name" content="向李的博客">
+<meta property="og:description" content="简历-消息积压场景 处理Kafka消息积压问题：对于线上积压百万条消息的情况，采取紧急扩容措施，创建临时topic以快速处理消息。同时，分析导致消息积压的根本原因，并改进监控Kafka消息积压的代码 问题场景：巡检数据–kafka积压。同一个实例里面有两个生产任务的线程，一共积压了两天的任务，总量是100万，线上积压了200万。消费者消费重复消息不会有问题，es会去重。 存在问题：  消费者是io">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2024/09/18/java-kafka/image1.png">
+<meta property="og:image" content="http://example.com/2024/09/18/java-kafka/image2.png">
+<meta property="og:image" content="http://example.com/2024/09/18/java-kafka/image3.png">
+<meta property="article:published_time" content="2024-09-18T08:46:52.000Z">
+<meta property="article:modified_time" content="2024-10-29T09:24:30.531Z">
+<meta property="article:author" content="向李">
+<meta property="article:tag" content="中间件">
+<meta property="article:tag" content="kafka">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2024/09/18/java-kafka/image1.png">
+
+<link rel="canonical" href="http://example.com/2024/09/18/java-kafka/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Kafka常见面试题（扩展-消息队列） | 向李的博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">向李的博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">把快乐写进重点，反复背诵！</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">17</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">7</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">16</span></a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/09/18/java-kafka/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/head.jpg">
+      <meta itemprop="name" content="向李">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="向李的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Kafka常见面试题（扩展-消息队列）
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-09-18 16:46:52" itemprop="dateCreated datePublished" datetime="2024-09-18T16:46:52+08:00">2024-09-18</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-10-29 17:24:30" itemprop="dateModified" datetime="2024-10-29T17:24:30+08:00">2024-10-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java%E6%A1%86%E6%9E%B6/" itemprop="url" rel="index"><span itemprop="name">Java框架</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2024/09/18/java-kafka/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2024/09/18/java-kafka/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>8.4k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>8 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1>简历-消息积压场景</h1>
+<p>处理Kafka消息积压问题：对于线上积压百万条消息的情况，采取紧急扩容措施，创建临时topic以快速处理消息。同时，分析导致消息积压的根本原因，并改进监控Kafka消息积压的代码</p>
+<p>问题场景：巡检数据–kafka积压。同一个实例里面有两个生产任务的线程，一共积压了两天的任务，总量是100万，线上积压了200万。消费者消费重复消息不会有问题，es会去重。</p>
+<p>存在问题：</p>
+<ol>
+<li>消费者是io密集型消费者，处理消息很慢，而生产者生产消息速率比较快；</li>
+<li>并发问题（因为有一批任务每个分区都有一两个任务消费时间特别长，消费类十几分钟，消费能力不足）</li>
+<li>为什么积压了没报警？因为生产巡检任务，生产到一半，会去查topic积压量会不会超过3000，在单线程情况下不会出现问题，但在多线程的情况下，查询结果不准，代码会返回异常-1，导致外面判断积压量是否大于阈值时，判断为-1，就判断为没有积压。</li>
+</ol>
+<p>解决办法：</p>
+<ul>
+<li>先排查是不是bug，如果是，要快速修复：比如消费者处理完消息未正确提交偏移量offset，导致重复消费或消费停滞；</li>
+<li>优化消费者代码逻辑：使用多线程处理，可以提高消息处理速度；</li>
+<li><strong>临时紧急扩容，新建临时topic</strong>：原来topic只有两个partition分区，因为消费者处理很耗时等操作，导致了百万消息积压，这时候需要紧急快速处理。解决办法：消费者的代码做一些调整，不再处理其他业务操作，新建临时的topic，把消息转发到临时的topic，并且partition分区增加到原来的10倍。将原来消费者业务逻辑处理的代码，放在新的临时消息那里处理。等快速处理完积压数据后，恢复原先部署的架构，下掉临时消费者，重新用原来的consumer机器来消费消息。</li>
+</ul>
+<p>【注意】</p>
+<ul>
+<li>要做好监控和告警，当消息积压到一定程度后，就要告警，通知负责人进行处理；</li>
+<li>不要上来就新建临时topic，去快速处理大量积压问题，应该先排查是不是bug，优化消费者代码。</li>
+</ul>
+<p>生产者：生产巡检任务，</p>
+<h1>Kafka是什么？应用场景</h1>
+<p>Kafka是一个分布式的、可扩展的、容错的、支持分区的（partition）、多副本的（replica）、基于Zookeeper框架的<strong>发布-订阅消息系统</strong>，适合离线和在线消息消费。</p>
+<ul>
+<li>应用场景：消息队列、数据处理（构建实时的流数据处理程序来转换或处理数据流）</li>
+</ul>
+<p>优点：</p>
+<ul>
+<li>高性能、高吞吐量、低延迟、高可用、容错性、高扩展性</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>没有完整的监控工具、不支持通配符主题选择</li>
+<li>由于是批量发送，数据并非真正的实时</li>
+<li>对于mqtt协议不支持</li>
+<li>不支持物联网传感数据直接接入</li>
+<li>仅支持统一分区内消息有序，无法实现全局消息有</li>
+</ul>
+<h1>和其他消息队列的对比优势？（RocketMQ、RabbitMQ ）</h1>
+<p>1.极致的性能：基于Scala和Java开发，设计中大量使用了批量处理和异步的思想，最高可以每秒处理千万级别的消息。</p>
+<p>2.生态系统兼容性无可匹敌：与周边生态系统的兼容性是最好的，尤其在大数据和流计算领域。</p>
+<h2 id="Kafka-与传统-MQ-消息系统之间有三个关键区别">Kafka 与传统 MQ 消息系统之间有三个关键区别</h2>
+<ol>
+<li>Kafka持久化日志，这些日志都可以被重复读取和无限期保留；</li>
+<li>Kafka是一个分布式系统：以集群的方式运行，可以灵活伸缩，在内部通过复制数据提升容错能力和高可用性；</li>
+<li>Kafka支持实时的流式处理</li>
+</ol>
+<h2 id="传统消息模型">传统消息模型</h2>
+<h3 id="JMS（Java-message-service）">JMS（Java message service）</h3>
+<p>JMS API 是一个消息服务的标准或者说是规范，允许应用程序组件基于JavaEE平台创建、发送、接收或读取消息。</p>
+<ul>
+<li>点对点（P2P）模型
+<ul>
+<li>使用队列Queue作为消息通信载体</li>
+<li>一条消息只能被一个消费者使用</li>
+<li>未被消费的消息在队列中保留直到被消费或超时</li>
+</ul>
+</li>
+<li>发布/订阅模型
+<ul>
+<li>使用主题Topic作为消息通信载体</li>
+<li>发布者发布一条消息，该消息通过主题传递给所有的订阅者</li>
+</ul>
+</li>
+</ul>
+<h3 id="AMQP">AMQP</h3>
+<p>应用层标准<strong>高级消息队列协议</strong>，兼容JMS。基于此协议的客户端与消息中间件可传递消息，并不受客户端/中间件同产品，不同的开发语言等条件的限制。</p>
+<p>（RabbitMQ基于AMPQ协议实现）</p>
+<h2 id="传统队列模型存在问题">传统队列模型存在问题</h2>
+<ul>
+<li>队列模型：需要将生产者产生的消息分发给多个消费者，并且每个消费者都能接收完整的消息内容，队列模型不好解决这个问题。</li>
+</ul>
+<h1>消息队列如何选择？</h1>
+<p>消息队列：ActiveMQ、Kafka、RabbitMQ、RocketMQ 和 Pulsar</p>
+<p><img src="/2024/09/18/java-kafka/image1.png" alt></p>
+<ul>
+<li>ActiveMQ 的性能比较差，而且版本迭代很慢，不推荐使用，已经被淘汰了</li>
+<li>RabbitMQ 在吞吐量方面虽然稍逊于 Kafka、RocketMQ 和 Pulsar，但是由于它基于 Erlang 开发，所以并发能力很强，性能极其好，延时很低，达到微秒级。</li>
+<li>RocketMQ 和 Pulsar 支持强一致性，对消息一致性要求比较高的场景可以使用</li>
+<li>Kafka 的特点：就是仅仅提供较少的核心功能，但是提供超高的吞吐量，ms 级的延迟，极高的可用性以及可靠性，而且分布式可以任意扩展。同时 Kafka 最好是支撑较少的 topic 数量即可，保证其超高吞吐量。Kafka 唯一的一点劣势是有可能消息重复消费，那么对数据准确性会造成极其轻微的影响，在大数据领域中以及日志采集中，这点轻微影响可以忽略这个特性天然适合大数据实时计算以及日志收集。如果是大数据领域的实时计算、日志采集等场景，用 Kafka 是业内标准的，绝对没问题，社区活跃度很高，绝对不会黄，何况几乎是全世界这个领域的事实性规范。</li>
+</ul>
+<h1>Kafka设计架构</h1>
+<p><img src="/2024/09/18/java-kafka/image2.png" alt></p>
+<ul>
+<li>broker（代理）：一个独立的kafka实例，多个broker组成一个集群</li>
+<li>topic：消息的主题
+<ul>
+<li>portition（分区）：一个topic可以有多个partition，同一个topic的partition可以分布在不同的broker上，不同分区的消息不同，分区在存储层面是一个可追加的日志文件</li>
+<li>replica：partition的副本，用来保障partition的高可用性，同一分区的不同副本中保存的是相同的消息。副本之间是一主多从的关系，其中主副本负责读写，从副本只负责消息同步。</li>
+</ul>
+</li>
+<li>producer（生产者）：产生消息</li>
+<li>consumer（消费者）：消费消息</li>
+<li>controller：kafka集群中的其中一个服务器，用来进行leader election和各种failover操作。</li>
+<li>zookeeper：kafka通过zookeeper存储集群中的meta消息</li>
+</ul>
+<p>【注意】topic中的paitition和broker的关系：</p>
+<ul>
+<li>一个topic中有n个partition，集群有n个broker，则一个broker存储一个partition；</li>
+<li>一个topic中有n个partition，集群有n + n个broker，则只有n个broker对应存储一个partition；</li>
+<li>一个topic中有n个partition，集群有小于n个broker，则一个broker存储一个或多个partition（这种情况应该尽量避免，会导致数据不均衡）。</li>
+</ul>
+<h1>消费者和消费组有什么关系？</h1>
+<ul>
+<li>共享唯一的group id</li>
+<li>组内的所有消费者一起消费订阅topic的所有分区</li>
+<li>每个partition只能由消费组内的一个消费者消费</li>
+<li>消费组内的消费者可以使用多线程的方式实现</li>
+<li>当消费组内的一个消费者挂掉，所对应的分区会分配到其他消费者</li>
+<li>当新增消费者时，也会从其他的消费者中分配出一个或多个分区到这个新的消费者</li>
+</ul>
+<h1>分区的目的</h1>
+<ul>
+<li>对于kafka集群来说：实现负载均衡</li>
+<li>对于消费者来说，可以提高并发度，提高效率</li>
+</ul>
+<h1>多副本的好处</h1>
+<p>我们发送给kafka的消息会被发送到leader副本，然后follower副本才能从leader副本中拉取消息进行同步。follow知识为了保证消息存储的安全，当leader出现故障时，从follower中选举出一个leader，但follower中如果有leader同步程度达不到要求的参加不了leader的选举。</p>
+<h1>kafka中生产者运行流程</h1>
+<ol>
+<li>封装成ProducerRecord对象</li>
+<li>对该对象进行序列化处理</li>
+<li>对消息进行分区处理，决定被发送到哪个主题的哪个分区</li>
+<li>分好区不会直接发送到服务端，而是放入生产者的缓冲区，多条消息会封装成一个批次batch，默认大小是16kb
+<ul>
+<li>累计一定数量</li>
+<li>累计时间间隔</li>
+<li>累计数据大小</li>
+</ul>
+</li>
+<li>sender线程启动后会从缓存中获取可以发送到批次</li>
+<li>sender将一个个batch发送到服务端</li>
+</ol>
+<p><img src="/2024/09/18/java-kafka/image3.png" alt></p>
+<p>【注意】发送的消息怎么分区？</p>
+<ul>
+<li>指定partition，发送到对应的partition</li>
+<li>未指定partition但有key，将key的hash值与topic的partition值取余得到partition值</li>
+<li>未指定partition和key，将随机生成一个整数（之后每次自增）与Topic可用的Partition总数取余得到Partition值（round-robin）</li>
+</ul>
+<h1>Kafka消息采用pull模式，还是push模式?</h1>
+<h2 id="生产者采用push">生产者采用push</h2>
+<p>producer 采用推（push）模式将消息发布到 broker，每条消息都被追加（append）到分区（patition）中，属于顺序写磁盘（顺序写磁盘效率比随机写内存要高，保障 kafka 吞吐率）</p>
+<h2 id="消费者采用pull">消费者采用pull</h2>
+<p>采用pull模式，自主决定是否批量的从broker中拉取数据（push模式难以适应消费速率不同的消费者）</p>
+<p>缺点：如果broker中没有数据，将导致consumer不断在循环中轮询，知道消息到达。为了避免这一点，kafka有个参数可以让consumer阻塞直到新消息到达。</p>
+<h1>Zookeeper 对于 Kafka 的作用是什么?</h1>
+<ul>
+<li>存放元数据：主题分区所有数据都保存在zookeeper中</li>
+<li>成员管理：
+<ul>
+<li>broker注册：broker是分布式部署并且相互独立，zookeeper用来管理注册到集群的所有节点</li>
+<li>topic注册：同一个topic的数据会被分到多个分区并将其分布在多个broker上，这些分区信息以及broker对应信息有zookeeper维护</li>
+</ul>
+</li>
+<li>负载均衡：对于同一个 Topic 的不同 Partition，Kafka 会尽力将这些 Partition 分布到不同的 Broker 服务器上。当生产者产生消息后也会尽量投递到不同 Broker 的 Partition 里面。</li>
+</ul>
+<h1>Kafka如何做到消息有序性（分布式下，如何保证顺序消费）</h1>
+<p>消息添加到partition的时候会采用尾加法，会分配一个特定的偏移量offset，所以kafka只能为我们保证partition中的消息有序，通过offset保证消息在分区内的顺序性。</p>
+<p>为了保证kakfa中消息的顺序性：</p>
+<ul>
+<li>保证消息在kafka中的顺序性
+<ul>
+<li>写数据时指定partition/key，保证消息的有序性</li>
+</ul>
+</li>
+<li>保证消费中处理消息的顺序性
+<ul>
+<li>一个partition只被一个消费者消费（消费者内部时单线程，可以保证消息消费的有序性）</li>
+<li>但多线程消费时，我们可以预先设置n个内存queue，具有相同的key放在同一个内存queue中，开启n个线程，对应消费一个queue。</li>
+</ul>
+</li>
+</ul>
+<h1>在什么情况下会出现消息丢失，如何减少数据丢失？</h1>
+<h2 id="消息丢失情况">消息丢失情况</h2>
+<ul>
+<li><strong>消费者</strong>
+<ul>
+<li>自动提交偏移量：消费者拉取到了某个分区后，会自动提交offset，若消费者刚拿到正准备消费时，突然挂掉，此时还没消费，但offset已经自动提交了【解决办法：关闭自动提交】</li>
+<li>消费者组再平衡：当新增消费者、移除消费者或者分区重新分配时，会发生再平衡，未提交的偏移量可能会导致消息重复消费或丢失。</li>
+</ul>
+</li>
+<li><strong>生产者</strong>
+<ul>
+<li>数据传输ACK配置：生产者将消息发送给kafka，但由于网络原因导致消息丢失【解决办法：producer消息确认机制】
+<ul>
+<li>acks=0：生产者能够通过网络把消息发送出去，就认为消息已成功写入kafka。</li>
+<li>acks=1：只要leader副本收到消息就算成功，但如果此时leader副本尚未将消息复制到其他副本，消息可能在leader副本故障后丢失</li>
+<li>acks=all：等待所有副本都确认收到消息后，生产者才认为消息发送成功，确保在broker中故障时消息不会丢失。</li>
+</ul>
+</li>
+<li>异步发送模式：Kafka生产者可以选择同步和异步发送消息。异步发送模式，消息会被放入缓冲区，由专门的线程异步发送。此时如果生产者应用程序崩溃，缓冲区中的消息可能会丢失。</li>
+</ul>
+</li>
+<li><strong>broker服务端</strong>
+<ul>
+<li>节点故障未及时同步：leader broker宕机，触发选举过程，集群选举了一个落后leader太多的broker作为leader，导致落后的消息丢失。</li>
+</ul>
+</li>
+</ul>
+<h2 id="如何减少数据丢失">如何减少数据丢失</h2>
+<ul>
+<li><strong>消费者</strong>：
+<ul>
+<li>手动提价偏移量</li>
+<li>处理再平衡事件</li>
+<li>配置合理的消费超时时间</li>
+</ul>
+</li>
+<li><strong>生产者</strong>：
+<ul>
+<li>使用同步发送模式</li>
+<li>合理配置ack参数：将参数配置为all</li>
+<li>设置重试机制：在消息发送失败时进行重试，增加消息发送成功的概率</li>
+</ul>
+</li>
+<li><strong>broker服务端</strong>：
+<ul>
+<li>配置合适的副本数，确保主节点和副节点之间的数据同步，减少故障节点故障导致的消息丢失</li>
+<li>监控节点状态：及时发现并处理节点故障，确保集群的高可用性</li>
+</ul>
+</li>
+</ul>
+<h1>如何不消费重复数据？比如扣款，我们不能重复扣</h1>
+<h2 id="重复消费的原因">重复消费的原因</h2>
+<ul>
+<li>生产者重复发送：在发送消息的时候，收到了一个超时响应，我们很难确定这个消息是否真的发送出去，会考虑重试，重试可能导致一个消息发送了多次。</li>
+<li>消费者重复消费：处理消息完毕之后，准备提交了，这个时候突然宕机，没有提交。等恢复过来，我们会再次消费同一个消息。</li>
+</ul>
+<h2 id="避免重复消费的原则">避免重复消费的原则</h2>
+<p>把消费逻辑设计成幂等的。我们的微服务也要尽可能设计成幂等性的，这样上游就可以利用重试来提高可用性了。</p>
+<h2 id="设计方案">设计方案</h2>
+<ol>
+<li>利用唯一索引:</li>
+</ol>
+<ul>
+<li>可以使用本地事务：
+<ul>
+<li>在业务处理的时候，现根据消息内容往业务表里面插入一条数据，而这个业务表上有唯一索引；</li>
+<li>如果插入成功了就说明这个消息没有被处理过，可以继续处理；</li>
+<li>如果插入的时候出现了唯一索引错误，那么说明这个消息之前被处理过。</li>
+</ul>
+</li>
+<li>如果不能使用本地事务：
+<ul>
+<li>在分库分表情况下，无法保证执行业务操作和数据插入到唯一索引这两步做成原子操作，只能追求最终一致性。</li>
+<li>把数据插入到唯一索引里面，避免重复消费，这个时候数据保持在初始化状态；</li>
+<li>然后执行业务操作；</li>
+<li>执行完后，将唯一索引里的数据更新为成功状态。</li>
+<li><strong>可能出现问题</strong>：第二步执行成功，第三步失败。此场景下需要启动一个异步检测系统
+<ul>
+<li>如果业务表的数据表明业务操作已经处理成功了，那么这个异步检测系统会把唯一索引更新为成功状态</li>
+<li>如果业务表的数据表明业务操作没有成功，那么异步检测系统可以直接触发重试</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ol start="2">
+<li>布隆过滤器+Redis+唯一索引
+<ul>
+<li>请求过来时，我们会利用布隆过滤器来判断有没有被处理过，如果布隆过滤器没有处理过，那么就直接处理；如果布隆过滤器处理过，就要执行下一步。</li>
+<li>利用Redis存储近期处理过的Key。如果Redis中有这个Key，说明被处理过，直接返回，否则进入第三步；（这一步的关键是这个key的过期时间应该设置为多长）</li>
+<li>利用唯一索引，如果唯一索引冲突，就代表已经处理过了。</li>
+<li>【这里可以结合布隆过滤器+唯一索引、Redis+唯一索引两种方法】</li>
+</ul>
+</li>
+</ol>
+<p>【注意】上述两种方法其实最后都需要使用唯一索引，那为什么还要引入布隆过滤器和redis呢，因为直接依赖唯一索引，数据库撑不住高并发，所以要想办法在使用唯一索引之前削减流量。</p>
+<ol start="3">
+<li>基于Kafka的幂等性可以避免重复消费</li>
+</ol>
+<h1>Kafka数据一致性原理</h1>
+<p>数据一致性是指系统中的数据在不同的地方、不同的时间点上保持一致，不会出现数据丢失、重复或错乱的情况。在Kafka中数据一致性是由多个机制来实现的：<strong>副本同步、ISR（In-Sync Replicas）、确认机制</strong>等。</p>
+<h2 id="副本同步（内部机制，不需要用户干预）">副本同步（内部机制，不需要用户干预）</h2>
+<p>在Kafka中，每个分区的数据会被写入多个副本中，以提供数据的冗余和容错能力。副本同步是指主副本将数据同步发送到所有副本的过程。在副本同步完成之前，生产者才会认为消息已经被成功写入。</p>
+<h2 id="ISR（In-Sync-Replicas）（内部机制）">ISR（In-Sync Replicas）（内部机制）</h2>
+<p>ISR指与主副本保持同步的副本集合。只有处于ISR中的副本才能参与到消息的写入和读取过程中。当某个副本与主副本的同步延迟超过一定的阈值后，会被踢出ISR，直到同步恢复正常</p>
+<h2 id="确认机制">确认机制</h2>
+<p>确认机制用于控制生产者和broker之间的数据确认过程，它确保了消息在broker中得到真确的处理。</p>
+<ul>
+<li>acks=0：生产者能够通过网络把消息发送出去，就认为消息已成功写入kafka。</li>
+<li>acks=1：只要leader副本收到消息就算成功，但如果此时leader副本尚未将消息复制到其他副本，消息可能在leader副本故障后丢失</li>
+<li>acks=all：等待所有副本都确认收到消息后，生产者才认为消息发送成功，确保在broker中故障时消息不会丢失。</li>
+</ul>
+<h1>怎么尽可能保证Kafka的可靠性？</h1>
+<p>Kafka的可靠性由生产者端的配置和服务端的机制共同保障。</p>
+<ul>
+<li>
+<p>生产者：重试机制、确认机制和数据持久化</p>
+<ul>
+<li>重试机制：生产者在消息发送失败的时候，会根据配置的重试策略重新发送消息，以确保临时性故障不会导致消息丢失</li>
+<li>确认机制</li>
+<li>数据持久化：Kafka将消息持久化到磁盘中，即使在系统重启后也能确保消息不丢失</li>
+</ul>
+</li>
+<li>
+<p>服务端：分区副本和自动故障转移来保障系统的高可用性</p>
+<ul>
+<li>副本机制：Kafka通过为每个分区创建多个副本，保证数据即使在节点故障时也能恢复，确保消息的一致性和可靠性</li>
+</ul>
+</li>
+</ul>
+<h1>怎么保证Kafka的高可用性</h1>
+<p>Kafka通过分区复制、副本选举、再均衡和数据持久化等机制，确保了高可用性</p>
+<ul>
+<li>副本机制：每个分区有一个leader和多个follower副本，leader副本负责所有读写操作，而follower副本则从leader副本同步数据。当leader副本失效时，Kafka会自动选举一个同步的follower作为新的leader。</li>
+<li>分区再均衡：当Kafka集群的broker发生变动，Kafka会自动进行分区再均衡，将分区重新分配到可用的broker上，确保负载均衡。</li>
+<li>多broker部署与扩展：通过水平扩展多个broker来提升系统的高可用性和扩展性。在一个多broker的集群中，即使部分broker出现故障，其他broker仍能继续提供服务。</li>
+<li>数据持久化：所有消息在写入分区日志文件后被持久化存储，这些日志文件会保留一段时间或直到消费者读完，即使系统重启或broker故障，已持久化的消息仍能被恢复。</li>
+</ul>
+<h1>Kafka 的再均衡Re-balanced机制</h1>
+<p>再均衡时Kafka中用于重新分配消费者组中消费者和分区之间关系的机制。</p>
+<p>什么情况下会发生：</p>
+<ul>
+<li>当消费者组中的消费者数量发生变化</li>
+<li>订阅的topic发生变化，新增和删除分区，或者主题发生变化。</li>
+</ul>
+<p>三种再均衡模式：</p>
+<ol>
+<li>Round Robin(轮询)：以轮询的方式将所有分区依次分配给消费者，确保每个消费者都能均匀的获得分区</li>
+<li>Range(范围)：首先计算每个消费者可以消费的分区个数，然后按照顺序将指定个数范围的分区分配给各个消费者</li>
+<li>Sticky(粘性)：在保证均衡的基础上，尽可能保持未宕机的消费者仍然消费它们之前负责的分区，以减少不必要的再均衡</li>
+</ol>
+<h1>Kafka的幂等性</h1>
+<p>幂等性指：生产者发送的相同消息只会被kafka处理依次，避免重复消费。</p>
+<h2 id="kafka为什么需要幂等性？">kafka为什么需要幂等性？</h2>
+<p>生产者在生产发送消息时，难免会重复发送消息，而引入幂等性后，重复发送只会生成一条有效的消息。</p>
+<p>如何实现：在底层设计架构中引入了producerID和SequenceNumber。</p>
+<ul>
+<li>producerID：在每个新的producer初始化时，会被分配给一个唯一的producerID，这个producerID对客户端是不可见的。PID的分配是在生产者实例首次连接到Kafka集群时进行的，这个id会一直保持不变，直到生产者实例关闭或断开连接。</li>
+<li>SequenceNumber：对于每个producerID，producer发送数据的每个Topic和partition都对应一个从0开始单调递增的sequenceNumber值。确保每条消息都有一个唯一的序列号，只要序列号不同，就被视为不同的消息。</li>
+</ul>
+<h1>kafka 维护消费状态跟踪机制</h1>
+<ul>
+<li>offset</li>
+<li>commit：手动提交和自动提交（最好是手动提交）</li>
+<li>检查点：代表了消费者已经成功处理并确认的消息位置，当消费者启动或恢复时，会从最近的检查点开始消费。</li>
+<li>再均衡：</li>
+</ul>
+<h1>Kafka 判断一个节点是否还活着有那两个条件?</h1>
+<ol>
+<li>心跳：每个节点会定期发送心跳信号给其他节点，表示它们的存活状态。心跳通常以固定时间间隔发送，并由接收方定期检查。如果一个节点停止发送心跳，其他节点会认为它已经失去联系，将其标记为不可用。</li>
+<li>会话超时：每个节点在于其他节点建立连接时会维护一个会话，其中包括心跳和其他状态信息。如果在一段时间内没有收到另一个节点的心跳，就可以将该节点的会话标记为过期。</li>
+</ol>
+<h2 id="数据传输的事务定义有哪三种">数据传输的事务定义有哪三种?</h2>
+<ul>
+<li>at most once(最多一次)：消息不会被重复发送，最多传输一次，但也有可能不传输。(无ack机制)</li>
+<li>at least once(最少一次)：消息不会被漏发送，最少被传输一次，但也有可能被重复传输。（使用ACK机制确保消息至少传递一次，即使生产者收到了部分ack，也可能会重新发送消息，导致消息可能会被消费者多次处理）</li>
+<li>exactly once(恰好一次)：不会漏传也不会重复传输，每个消息都被传输。（确保消息的ack机制配合幂等性和事务特性，以实现精确一次处理的语义）</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E4%B8%AD%E9%97%B4%E4%BB%B6/" rel="tag"># 中间件</a>
+              <a href="/tags/kafka/" rel="tag"># kafka</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2024/09/10/Java-%E5%B9%B6%E5%8F%91-synchronized/" rel="prev" title="synchronized底层原理和优化">
+      <i class="fa fa-chevron-left"></i> synchronized底层原理和优化
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">1.</span> <span class="nav-text">简历-消息积压场景</span></a></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">2.</span> <span class="nav-text">Kafka是什么？应用场景</span></a></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">3.</span> <span class="nav-text">和其他消息队列的对比优势？（RocketMQ、RabbitMQ ）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Kafka-%E4%B8%8E%E4%BC%A0%E7%BB%9F-MQ-%E6%B6%88%E6%81%AF%E7%B3%BB%E7%BB%9F%E4%B9%8B%E9%97%B4%E6%9C%89%E4%B8%89%E4%B8%AA%E5%85%B3%E9%94%AE%E5%8C%BA%E5%88%AB"><span class="nav-number">3.1.</span> <span class="nav-text">Kafka 与传统 MQ 消息系统之间有三个关键区别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BC%A0%E7%BB%9F%E6%B6%88%E6%81%AF%E6%A8%A1%E5%9E%8B"><span class="nav-number">3.2.</span> <span class="nav-text">传统消息模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#JMS%EF%BC%88Java-message-service%EF%BC%89"><span class="nav-number">3.2.1.</span> <span class="nav-text">JMS（Java message service）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AMQP"><span class="nav-number">3.2.2.</span> <span class="nav-text">AMQP</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BC%A0%E7%BB%9F%E9%98%9F%E5%88%97%E6%A8%A1%E5%9E%8B%E5%AD%98%E5%9C%A8%E9%97%AE%E9%A2%98"><span class="nav-number">3.3.</span> <span class="nav-text">传统队列模型存在问题</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">4.</span> <span class="nav-text">消息队列如何选择？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">5.</span> <span class="nav-text">Kafka设计架构</span></a></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">6.</span> <span class="nav-text">消费者和消费组有什么关系？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">7.</span> <span class="nav-text">分区的目的</span></a></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">8.</span> <span class="nav-text">多副本的好处</span></a></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">9.</span> <span class="nav-text">kafka中生产者运行流程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">10.</span> <span class="nav-text">Kafka消息采用pull模式，还是push模式?</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%9F%E4%BA%A7%E8%80%85%E9%87%87%E7%94%A8push"><span class="nav-number">10.1.</span> <span class="nav-text">生产者采用push</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B6%88%E8%B4%B9%E8%80%85%E9%87%87%E7%94%A8pull"><span class="nav-number">10.2.</span> <span class="nav-text">消费者采用pull</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">11.</span> <span class="nav-text">Zookeeper 对于 Kafka 的作用是什么?</span></a></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">12.</span> <span class="nav-text">Kafka如何做到消息有序性（分布式下，如何保证顺序消费）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">13.</span> <span class="nav-text">在什么情况下会出现消息丢失，如何减少数据丢失？</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B6%88%E6%81%AF%E4%B8%A2%E5%A4%B1%E6%83%85%E5%86%B5"><span class="nav-number">13.1.</span> <span class="nav-text">消息丢失情况</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E5%87%8F%E5%B0%91%E6%95%B0%E6%8D%AE%E4%B8%A2%E5%A4%B1"><span class="nav-number">13.2.</span> <span class="nav-text">如何减少数据丢失</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">14.</span> <span class="nav-text">如何不消费重复数据？比如扣款，我们不能重复扣</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%87%8D%E5%A4%8D%E6%B6%88%E8%B4%B9%E7%9A%84%E5%8E%9F%E5%9B%A0"><span class="nav-number">14.1.</span> <span class="nav-text">重复消费的原因</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%81%BF%E5%85%8D%E9%87%8D%E5%A4%8D%E6%B6%88%E8%B4%B9%E7%9A%84%E5%8E%9F%E5%88%99"><span class="nav-number">14.2.</span> <span class="nav-text">避免重复消费的原则</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%A1%88"><span class="nav-number">14.3.</span> <span class="nav-text">设计方案</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">15.</span> <span class="nav-text">Kafka数据一致性原理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%AF%E6%9C%AC%E5%90%8C%E6%AD%A5%EF%BC%88%E5%86%85%E9%83%A8%E6%9C%BA%E5%88%B6%EF%BC%8C%E4%B8%8D%E9%9C%80%E8%A6%81%E7%94%A8%E6%88%B7%E5%B9%B2%E9%A2%84%EF%BC%89"><span class="nav-number">15.1.</span> <span class="nav-text">副本同步（内部机制，不需要用户干预）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ISR%EF%BC%88In-Sync-Replicas%EF%BC%89%EF%BC%88%E5%86%85%E9%83%A8%E6%9C%BA%E5%88%B6%EF%BC%89"><span class="nav-number">15.2.</span> <span class="nav-text">ISR（In-Sync Replicas）（内部机制）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A1%AE%E8%AE%A4%E6%9C%BA%E5%88%B6"><span class="nav-number">15.3.</span> <span class="nav-text">确认机制</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">16.</span> <span class="nav-text">怎么尽可能保证Kafka的可靠性？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">17.</span> <span class="nav-text">怎么保证Kafka的高可用性</span></a></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">18.</span> <span class="nav-text">Kafka 的再均衡Re-balanced机制</span></a></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">19.</span> <span class="nav-text">Kafka的幂等性</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#kafka%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81%E5%B9%82%E7%AD%89%E6%80%A7%EF%BC%9F"><span class="nav-number">19.1.</span> <span class="nav-text">kafka为什么需要幂等性？</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">20.</span> <span class="nav-text">kafka 维护消费状态跟踪机制</span></a></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">21.</span> <span class="nav-text">Kafka 判断一个节点是否还活着有那两个条件?</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E4%BC%A0%E8%BE%93%E7%9A%84%E4%BA%8B%E5%8A%A1%E5%AE%9A%E4%B9%89%E6%9C%89%E5%93%AA%E4%B8%89%E7%A7%8D"><span class="nav-number">21.1.</span> <span class="nav-text">数据传输的事务定义有哪三种?</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="向李"
+      src="/images/head.jpg">
+  <p class="site-author-name" itemprop="name">向李</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">16</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">向李</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">42k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">38 分钟</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : '0UGUnn0nRmVnPjhDY36P7CVj-gzGzoHsz',
+      appKey     : 'qjD61NKOR25EICQ2N9sctAcJ',
+      placeholder: "Just go go",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>
